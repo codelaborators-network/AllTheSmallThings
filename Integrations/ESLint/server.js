@@ -3,12 +3,12 @@ const bodyParser = require('body-parser');
 
 const app = express();
 
-const port = 8000;
+const port = process.env.PORT || 8000;
 
-app.use(bodyParser.text({ type: 'text/html'}));
+app.use(bodyParser.json());
 
 require('./app/routes')(app);
 
 app.listen(port, () => {
-    console.log(`Go go gadget port number: ${port}!`);
+  console.log(`Go go gadget port number: ${port}!`);
 });
