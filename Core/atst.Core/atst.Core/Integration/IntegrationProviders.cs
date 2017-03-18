@@ -1,6 +1,4 @@
-﻿using atst.Core.Integration;
-
-namespace atst.Core.Authentication
+﻿namespace atst.Core.Integration
 {
     public class IntegrationProviders : IIntegrationProviders
     {
