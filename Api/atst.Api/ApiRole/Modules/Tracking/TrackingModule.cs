@@ -1,4 +1,5 @@
-﻿using atst.Core.Tracking;
+﻿using atst.Core.Integration;
+using atst.Core.Tracking;
 using ApiRole.Modules.Tracking.Models;
 using Nancy;
 using Nancy.ModelBinding;
@@ -43,7 +44,7 @@ namespace ApiRole.Modules.Tracking
             else
             {
 
-                if (_xpTracking.ApplyTracking(xpModel.UserName, xpModel.Xp))
+                if (_xpTracking.ApplyTracking(xpModel.UserName, xpModel.Xp, (int)IntegrationsProviderTypes.GitHub))
                 {
                     response = new Response
                     {

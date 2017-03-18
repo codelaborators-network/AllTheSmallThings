@@ -2,6 +2,6 @@
 {
     public interface IXpTracking
     {
-        bool ApplyTracking(string xpModelUserName, int xpModelXp);
+        bool ApplyTracking(string xpModelUserName, int xpModelXp, int integrationProvider);
     }
 }

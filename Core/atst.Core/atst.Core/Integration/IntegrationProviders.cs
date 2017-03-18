@@ -1,10 +1,23 @@
-﻿namespace atst.Core.Integration
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+
+namespace atst.Core.Integration
 {
     public class IntegrationProviders : IIntegrationProviders
     {
-        public string[] GetProviderTypes()
+        public Dictionary<string, int> GetProviderTypes()
         {
-            return new []{ "GitHub", "Email", "Telephone", "SourceSafe", "SVN", "VSTS", "TFS-Onsite" };
+            var names = Enum.GetNames(typeof(IntegrationsProviderTypes));
+
+            var providers = new Dictionary<string, int>();
+
+            foreach (var name in names)
+            {
+                providers.Add(name, (int)Enum.Parse(typeof(IntegrationsProviderTypes), name));
+            }
+
+            return providers;
         }
     }
 }

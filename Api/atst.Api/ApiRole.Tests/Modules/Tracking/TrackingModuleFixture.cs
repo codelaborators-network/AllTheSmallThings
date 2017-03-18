@@ -1,4 +1,5 @@
 ﻿using System;
+using atst.Core.Integration;
 using atst.Core.Tracking;
 using ApiRole.Modules.Tracking;
 using ApiRole.Modules.Tracking.Models;
@@ -26,44 +27,44 @@ namespace ApiRole.Tests.Modules.Tracking
         public void ApplXp_Success()
         {
             //Arrange
-            var user = new XpModel { UserName = "me@test.com", Xp = 123456 };
-            _xpTracking.Setup(x => x.ApplyTracking(It.IsAny<string>(), It.IsAny<int>())).Returns(true);
+            var user = new XpModel { UserName = "me@test.com", Xp = 123456, IntegrationsProvider = IntegrationsProviderTypes.GitHub };
+            _xpTracking.Setup(x => x.ApplyTracking(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>())).Returns(true);
 
             //Act
             var response = _browser.Put("/api/tracking/", x => x.JsonBody(user));
 
             //Assert
             response.StatusCode.ShouldEqual(HttpStatusCode.OK);
-            _xpTracking.Verify(x => x.ApplyTracking(It.IsAny<string>(), It.IsAny<int>()), Times.Once);
+            _xpTracking.Verify(x => x.ApplyTracking(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()), Times.Once);
         }
 
         [Fact]
         public void ApplXp_FailInvalidUser()
         {
             //Arrange
-            var user = new XpModel { UserName = string.Empty, Xp = 123456 };
+            var user = new XpModel { UserName = string.Empty, Xp = 123456, IntegrationsProvider = IntegrationsProviderTypes.GitHub };
 
             //Act
             var response = _browser.Put("/api/tracking/", x => x.JsonBody(user));
 
             //Assert
             response.StatusCode.ShouldEqual(HttpStatusCode.BadRequest);
-            _xpTracking.Verify(x => x.ApplyTracking(It.IsAny<string>(), It.IsAny<int>()), Times.Never);
+            _xpTracking.Verify(x => x.ApplyTracking(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()), Times.Never);
         }
 
         [Fact]
         public void ApplXp_FailApplyFailure()
         {
             //Arrange
-            var user = new XpModel { UserName = "me@test.com", Xp = 123456 };
-            _xpTracking.Setup(x => x.ApplyTracking(It.IsAny<string>(), It.IsAny<int>())).Returns(false);
+            var user = new XpModel { UserName = "me@test.com", Xp = 123456, IntegrationsProvider = IntegrationsProviderTypes.GitHub };
+            _xpTracking.Setup(x => x.ApplyTracking(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>())).Returns(false);
 
             //Act
             var response = _browser.Put("/api/tracking/", x => x.JsonBody(user));
 
             //Assert
             response.StatusCode.ShouldEqual(HttpStatusCode.BadRequest);
-            _xpTracking.Verify(x => x.ApplyTracking(It.IsAny<string>(), It.IsAny<int>()), Times.Once);
+            _xpTracking.Verify(x => x.ApplyTracking(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()), Times.Once);
         }
     }
 }
