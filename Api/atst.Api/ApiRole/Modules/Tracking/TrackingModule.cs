@@ -29,7 +29,7 @@ namespace ApiRole.Modules.Tracking
         {
             var xpModel = this.Bind<XpModel>();
 
-            LastRequest = $"username: {xpModel.UserName} -- xp: {xpModel.Xp} --- provider: {xpModel.IntegrationsProvider} ({(int)xpModel.IntegrationsProvider})";
+            LastRequest = $"Received - username: {xpModel.UserName} -- xp: {xpModel.Xp} --- provider: {xpModel.IntegrationsProvider} ({(int)xpModel.IntegrationsProvider})";
 
             Response response;
 
@@ -46,6 +46,7 @@ namespace ApiRole.Modules.Tracking
 
                 if (_xpTracking.ApplyTracking(xpModel.UserName, xpModel.Xp, (int)IntegrationsProviderTypes.GitHub))
                 {
+                    LastRequest = $"Posted - username: {xpModel.UserName} -- xp: {xpModel.Xp} --- provider: {xpModel.IntegrationsProvider} ({(int)xpModel.IntegrationsProvider})";
                     response = new Response
                     {
                         StatusCode = HttpStatusCode.OK
