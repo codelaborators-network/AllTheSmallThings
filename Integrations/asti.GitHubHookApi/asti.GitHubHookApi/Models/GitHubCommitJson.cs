@@ -10,6 +10,24 @@ namespace asti.GitHubHookApi.Models
    {
       [JsonProperty("files")]
       public ICollection<GitHubCommitFileDetails> Files { get; set; }
+
+      [JsonProperty("commit")]
+      public GitHubCommitDetails CommitDetails { get; set; }
+   }
+
+   public class GitHubCommitDetails
+   {
+      [JsonProperty("author")]
+      public GitHubAuthorDetails Author { get; set; }
+   }
+
+   public class GitHubAuthorDetails
+   {
+      [JsonProperty("name")]
+      public string Name { get; set; }
+
+      [JsonProperty("email")]
+      public string Email { get; set; }
    }
 
    public class GitHubCommitFileDetails
@@ -23,6 +41,17 @@ namespace asti.GitHubHookApi.Models
 
       [JsonProperty("raw_url")]
       public string RawUrl { get; set; }
+
+      [JsonProperty("additions")]
+      public int Additions { get; set; }
+
+      [JsonProperty("deletions")]
+      public int Deletions { get; set; }
+
+      public int NumberOfModifications()
+      {
+         return Additions + Deletions;
+      }
    }
 
 }
