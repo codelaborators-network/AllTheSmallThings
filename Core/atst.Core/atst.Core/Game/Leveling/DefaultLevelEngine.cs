@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using atst.Core.Game.Entities;
+using System.Linq;
+using atst.Core.Authentication.Entities;
 using atst.Core.Game.Experience;
 
 namespace atst.Core.Game.Leveling
@@ -16,16 +16,12 @@ namespace atst.Core.Game.Leveling
             _xpAggregator = xpAggregator;
         }
 
-        public int CalculateLevel(Xp xp)
-        {
-            return CalculateLevel(new[] {xp});
-        }
 
-        public int CalculateLevel(IList<Xp> xpEntries)
+        public int CalculateLevel(User user)
         {
             var level = 1;
 
-            var xp = _xpAggregator.CalculateXp(xpEntries);
+            var xp = user.XpHistory.Any() ? _xpAggregator.CalculateXp(user.XpHistory) : 0;
 
             if (xp>0)
             {

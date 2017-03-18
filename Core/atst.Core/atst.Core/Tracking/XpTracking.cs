@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Web.Compilation;
 using atst.Core.Authentication.Entities;
+using atst.Core.Game.Leveling;
 using atst.Core.Helpers;
 
 namespace atst.Core.Tracking
@@ -11,11 +10,15 @@ namespace atst.Core.Tracking
     public class XpTracking : IXpTracking
     {
         private readonly IFirebaseHelper _firebaseHelper;
+        private readonly ILevelEngine _levelEngine;
 
         private static List<User> Users { get; set; }
 
-        public XpTracking()
+        public XpTracking(IFirebaseHelper firebaseHelper, ILevelEngine levelEngine)
         {
+            _firebaseHelper = firebaseHelper;
+            _levelEngine = levelEngine;
+
             Users = new List<User>();
         }
 
@@ -24,13 +27,12 @@ namespace atst.Core.Tracking
             var success = true;
 
             var user = GetUser(xpModelUserName);
-            user.Xp += xpModelXp;
 
 
             try
             {
                 var eventItem = new EventItem(xpModelXp, integrationProvider);
-                
+
                 _firebaseHelper.CreateXPRecordAsync(xpModelUserName.Replace('.', ','), eventItem);
             }
             catch (Exception e)
@@ -38,14 +40,40 @@ namespace atst.Core.Tracking
                 return false;
             }
 
+
+            user.Xp += xpModelXp;
+            _levelEngine.CalculateLevel(user);
+
+            try
+            {
+                var eventItem = new EventItem(xpModelXp, integrationProvider);
+
+                _firebaseHelper.CreateLevelRecordAsync(xpModelUserName.Replace('.', ','), eventItem);
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+
+
+
             return true;
         }
 
         private User GetUser(string userName)
         {
-             return Users.FirstOrDefault(x => x.UserName == userName) ??
-                        (_firebaseHelper.GetUser(userName).Result ?? 
-                        new User { UserName = userName });
+            var user = Users.FirstOrDefault(x => x.UserName == userName);
+
+            if (user == null)
+            {
+                user = _firebaseHelper.GetUser(userName).Result ?? new User { UserName = userName };
+
+                Users.Add(user);
+            }
+
+            _levelEngine.CalculateLevel(user);
+
+            return user;
         }
     }
 }

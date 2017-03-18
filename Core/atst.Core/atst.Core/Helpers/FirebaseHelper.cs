@@ -43,6 +43,14 @@ namespace atst.Core.Helpers
             return record.Key;
         }
 
+        public async Task<string> CreateLevelRecordAsync(string userName, EventItem eventItem)
+        {
+            //Over to you my friend!
+
+
+            return string.Empty;
+        }
+
         public async Task<User> GetUser(string userName)
         {
             //FILL ME IN BIG BOY!!
