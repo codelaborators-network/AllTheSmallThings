@@ -18,12 +18,19 @@ namespace TestingFirebase
             string emailAddress = "prjseal@gmail.com";
             int xp = 1;
 
-            EventItem eventItem = new EventItem(xp, integrationId);
+            int level = 1;
+
+            EventItem eventItem = new EventItem(xp, integrationId, atst.Core.Game.Entities.ActionType.Add);
+            LevelItem levelItem = new LevelItem(level, atst.Core.Game.Entities.ActionType.Add);
 
             FirebaseHelper fbHelper = new FirebaseHelper();
 
-            var task = fbHelper.CreateXPRecordAsync(emailAddress.Replace(".", ","), eventItem);
-            var result = task.Result;
+            var xpTask = fbHelper.CreateXPRecordAsync(emailAddress.Replace(".", ","), eventItem);
+            var xpResult = xpTask.Result;
+
+            var levelTask = fbHelper.CreateLevelRecordAsync(emailAddress.Replace(".", ","), levelItem);
+            var levelResult = levelTask.Result;
+
         }
     }
 }
