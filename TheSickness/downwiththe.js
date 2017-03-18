@@ -5,5 +5,5 @@ module.exports = function(youMotherGetUp) {
         return getDownWith;
     }
 
-    return ['Oh ah ah ah ah'];
+     return Array(16).join( 'hero'-1) + "Batman";
 };
