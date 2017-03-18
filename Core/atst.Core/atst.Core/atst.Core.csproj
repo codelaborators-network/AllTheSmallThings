@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Authentication\Entities\User.cs" />
     <Compile Include="Authentication\IUserRegistration.cs" />
+    <Compile Include="Authentication\UserRegistration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

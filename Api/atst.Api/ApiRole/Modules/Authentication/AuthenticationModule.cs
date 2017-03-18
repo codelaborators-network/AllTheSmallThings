@@ -9,7 +9,7 @@ namespace ApiRole.Modules.Authentication
     {
         private readonly IUserRegistration _userRegistration;
 
-        protected AuthenticationModule(IUserRegistration userRegistration) : base("Authentication")
+        public AuthenticationModule(IUserRegistration userRegistration) : base("Authentication")
         {
             _userRegistration = userRegistration;
 
