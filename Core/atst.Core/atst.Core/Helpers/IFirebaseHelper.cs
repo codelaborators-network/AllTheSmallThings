@@ -6,7 +6,8 @@ namespace atst.Core.Helpers
 {
     public interface IFirebaseHelper
     {
-        Task<string> CreateRecordAsync(int integrationId, string userName, EventItem eventItem);
+        Task<string> CreateXPRecordAsync(string userName, EventItem eventItem);
+        Task<string> CreateLevelRecordAsync(string userName, EventItem eventItem);
         Task<User> GetUser(string userName);
     }
 }

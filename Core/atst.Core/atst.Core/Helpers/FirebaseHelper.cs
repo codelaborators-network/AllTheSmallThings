@@ -14,14 +14,13 @@ namespace atst.Core.Helpers
         private string _appSecret { get; set; }
         private string _databaseUrl { get; set; }
         private string _usersDocumentAlias { get; set; }
-        private string _integrationsAlias { get; set; }
+        private string _xpEventAlias => "XPEvents";
 
         public FirebaseHelper()
         {
             _appSecret = "jyIAM1tnyy2k0y400mQgiNXKVG6jiO6lXqocQdqq";
             _databaseUrl = "https://all-the-small-things-7b52b.firebaseio.com/";
-            _integrationsAlias = "users";
-            _usersDocumentAlias = "integrations";
+            _usersDocumentAlias = "users";
         }
 
         private FirebaseClient Client()
@@ -34,16 +33,22 @@ namespace atst.Core.Helpers
               });
         }
 
-        public async Task<string> CreateRecordAsync(int integrationId, string userName, EventItem eventItem)
+        public async Task<string> CreateXPRecordAsync(string userName, EventItem eventItem)
         {
             var record = await Client()
-              .Child(_integrationsAlias)
-              .Child(integrationId.ToString())
               .Child(_usersDocumentAlias)
-              .Child(userName.Replace(".", ","))
+              .Child(userName)
+              .Child(_xpEventAlias)
               .PostAsync(eventItem);
-
             return record.Key;
+        }
+
+        public async Task<string> CreateLevelRecordAsync(string userName, EventItem eventItem)
+        {
+            //Over to you my friend!
+
+
+            return string.Empty;
         }
 
         public async Task<User> GetUser(string userName)

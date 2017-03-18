@@ -1,4 +1,6 @@
 ﻿using atst.Core.Authentication;
+using atst.Core.Game.Experience;
+using atst.Core.Game.Leveling;
 using atst.Core.Helpers;
 using atst.Core.Integration;
 using atst.Core.Tracking;
@@ -15,6 +17,8 @@ namespace ApiRole
             container.Register<IXpTracking,XpTracking>();
             container.Register<IIntegrationProviders, IntegrationProviders>();
             container.Register<IFirebaseHelper, FirebaseHelper>();
+            container.Register<IXpAggregator, XpAggregator>();
+            container.Register<ILevelEngine, DefaultLevelEngine>();
         }
     }
 }
