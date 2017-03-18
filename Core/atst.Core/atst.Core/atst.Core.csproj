@@ -65,6 +65,7 @@
     <Compile Include="Authentication\Entities\EventItem.cs" />
     <Compile Include="Authentication\Entities\User.cs" />
     <Compile Include="Game\Entities\enums.cs" />
+    <Compile Include="Game\Entities\Level.cs" />
     <Compile Include="Game\Entities\Xp.cs" />
     <Compile Include="Game\Leveling\ILevelEngine.cs" />
     <Compile Include="Game\Leveling\DefaultLevelEngine.cs" />

@@ -8,8 +8,8 @@ namespace atst.Core.Authentication.Entities
         public string UserName { get; set; }
         public string Password { get; set; }
         public int Xp { get; set; }
-        public IList<Xp> XpList { get; set; }
+        public IList<Xp> XpHistory { get; set; }
         public int Level { get; set; }
-
+        public IList<Level> LevelHistory {get;set;}
     }
 }
