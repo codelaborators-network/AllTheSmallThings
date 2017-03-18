@@ -30,7 +30,7 @@ namespace asti.GitHubHookApi.Helpers
 
                return await taskData;
             }
-            catch (HttpRequestException e)
+            catch (HttpRequestException)
             {
                return String.Empty;
             }

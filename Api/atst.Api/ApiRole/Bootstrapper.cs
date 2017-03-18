@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using atst.Core.Authentication;
+using atst.Core.Integration;
+using atst.Core.Tracking;
 using Nancy;
 using Nancy.Bootstrapper;
 using Nancy.TinyIoc;
@@ -14,8 +16,8 @@ namespace ApiRole
         protected override void ApplicationStartup(TinyIoCContainer container, IPipelines pipelines)
         {
             container.Register<IUserRegistration,UserRegistration>();
-
-
+            container.Register<IXpTracking,XpTracking>();
+            container.Register<IIntegrationProviders, IntegrationProviders>();
         }
     }
 }

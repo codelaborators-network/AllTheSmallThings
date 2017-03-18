@@ -12,15 +12,16 @@ namespace ApiRole.Tests.Modules.Authentication
 {
     public class AuthenticationModuleFixture
     {
-        private Mock<IUserRegistration> _userRegistration;
+        private readonly Mock<IUserRegistration> _userRegistration;
 
-        private Browser _browser;
+        private readonly Browser _browser;
         public AuthenticationModuleFixture()
         {
             _userRegistration = new Mock<IUserRegistration>();
             var module = new AuthenticationModule(_userRegistration.Object);
             _browser = BrowserBuilder.CreateNullBrowserForLogicTests(module);
         }
+
         #region registration
         [Fact]
         public void RegisterUser_Success()
@@ -55,7 +56,7 @@ namespace ApiRole.Tests.Modules.Authentication
             var response = _browser.Post("/api/authentication/Register", x => x.JsonBody(user));
 
             //Assert
-            response.StatusCode.ShouldEqual(HttpStatusCode.Forbidden);
+            response.StatusCode.ShouldEqual(HttpStatusCode.BadRequest);
             response.ReasonPhrase.ShouldEqual("Invalid details provided");
             _userRegistration.Verify(x => x.IsUserValid(It.IsAny<string>()), Times.Once);
             _userRegistration.Verify(x => x.RegisterUser(It.IsAny<string>(), It.IsAny<string>()), Times.Never);
@@ -72,7 +73,7 @@ namespace ApiRole.Tests.Modules.Authentication
             var response = _browser.Post("/api/authentication/Register", x => x.JsonBody(user));
 
             //Assert
-            response.StatusCode.ShouldEqual(HttpStatusCode.Forbidden);
+            response.StatusCode.ShouldEqual(HttpStatusCode.BadRequest);
             response.ReasonPhrase.ShouldEqual("Unable to created requested user");
             _userRegistration.Verify(x => x.IsUserValid(It.IsAny<string>()), Times.Once);
             _userRegistration.Verify(x => x.RegisterUser(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
@@ -90,7 +91,7 @@ namespace ApiRole.Tests.Modules.Authentication
             var response = _browser.Post("/api/authentication/Register", x => x.JsonBody(user));
 
             //Assert
-            response.StatusCode.ShouldEqual(HttpStatusCode.Forbidden);
+            response.StatusCode.ShouldEqual(HttpStatusCode.BadRequest);
             response.ReasonPhrase.ShouldEqual("Invalid details provided");
             _userRegistration.Verify(x => x.RegisterUser(It.IsAny<string>(), It.IsAny<string>()), Times.Never);
             _userRegistration.Verify(x => x.IsUserValid(It.IsAny<string>()), Times.Never);
@@ -123,7 +124,7 @@ namespace ApiRole.Tests.Modules.Authentication
             var response = _browser.Post("/api/authentication/", x => x.JsonBody(user));
 
             //Assert
-            response.StatusCode.ShouldEqual(HttpStatusCode.Forbidden);
+            response.StatusCode.ShouldEqual(HttpStatusCode.BadRequest);
             response.ReasonPhrase.ShouldEqual("Invalid details provided");
             _userRegistration.Verify(x => x.AuthenticateUser(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
         }

@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CsQuery, Version=1.3.3.5, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Api\atst.Api\packages\CsQuery.1.3.3\lib\net40\CsQuery.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -41,9 +44,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Authentication\Entities\User.cs" />
+    <Compile Include="Authentication\IntegrationProviders.cs" />
     <Compile Include="Authentication\IUserRegistration.cs" />
     <Compile Include="Authentication\UserRegistration.cs" />
+    <Compile Include="Integration\IIntegrationProviders.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tracking\IXpTracking.cs" />
+    <Compile Include="Tracking\XpTracking.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
