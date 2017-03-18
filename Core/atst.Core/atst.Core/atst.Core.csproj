@@ -64,9 +64,9 @@
   <ItemGroup>
     <Compile Include="Authentication\Entities\EventItem.cs" />
     <Compile Include="Authentication\Entities\User.cs" />
+    <Compile Include="Helpers\IFirebaseHelper.cs" />
+    <Compile Include="Integration\Enums.cs" />
     <Compile Include="Integration\IntegrationProviders.cs" />
-    <Compile Include="Authentication\IUserRegistration.cs" />
-    <Compile Include="Authentication\UserRegistration.cs" />
     <Compile Include="Helpers\FirebaseHelper.cs" />
     <Compile Include="Integration\IIntegrationProviders.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -75,6 +75,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Game\Gear\" />
+    <Folder Include="Game\Leveling\" />
+    <Folder Include="Game\Xp\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

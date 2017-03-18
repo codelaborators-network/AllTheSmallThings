@@ -9,22 +9,22 @@ using Firebase.Database.Query;
 
 namespace atst.Core.Helpers
 {
-    public class FirebaseHelper
+    public class FirebaseHelper : IFirebaseHelper
     {
         private string _appSecret { get; set; }
         private string _databaseUrl { get; set; }
         private string _usersDocumentAlias { get; set; }
         private string _integrationsAlias { get; set; }
 
-        public FirebaseHelper(string appSecret, string databaseUrl, string usersDocumentAlias, string integrationsAlias)
+        public FirebaseHelper()
         {
-            _appSecret = appSecret;
-            _databaseUrl = databaseUrl;
-            _integrationsAlias = integrationsAlias;
-            _usersDocumentAlias = usersDocumentAlias;
+            _appSecret = "jyIAM1tnyy2k0y400mQgiNXKVG6jiO6lXqocQdqq";
+            _databaseUrl = "https://all-the-small-things-7b52b.firebaseio.com/";
+            _integrationsAlias = "users";
+            _usersDocumentAlias = "integrations";
         }
 
-        public FirebaseClient GetClient()
+        private FirebaseClient Client()
         {
             return new FirebaseClient(
               _databaseUrl,
@@ -34,30 +34,24 @@ namespace atst.Core.Helpers
               });
         }
 
-        public async Task<string> CreateRecordAsync(int integrationId, string userName, EventItem eventItem, FirebaseClient client)
+        public async Task<string> CreateRecordAsync(int integrationId, string userName, EventItem eventItem)
         {
-            var auth = _appSecret;
-            var record = await client
+            var record = await Client()
               .Child(_integrationsAlias)
               .Child(integrationId.ToString())
               .Child(_usersDocumentAlias)
               .Child(userName.Replace(".", ","))
               .PostAsync(eventItem);
+
             return record.Key;
         }
 
-        //public async Task<XPRecord> GetUserAsync(string userName, FirebaseClient client)
-        //{
-        //    var record = await client
-        //      .Child("experiencePoints")
-        //      .OrderByKey()
-        //      .StartAt(userName)
-        //      .OnceSingleAsync<XPRecord>();   
-        //    return record;
-        //}
+        public async Task<User> GetUser(string userName)
+        {
+            //FILL ME IN BIG BOY!!
 
 
-
-
+            return new User();
+        }
     }
 }

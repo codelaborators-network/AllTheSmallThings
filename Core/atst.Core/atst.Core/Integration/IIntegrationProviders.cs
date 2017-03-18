@@ -1,7 +1,9 @@
-﻿namespace atst.Core.Integration
+﻿using System.Collections.Generic;
+
+namespace atst.Core.Integration
 {
     public interface IIntegrationProviders
     {
-        string[] GetProviderTypes();
+        Dictionary<string, int> GetProviderTypes();
     }
 }

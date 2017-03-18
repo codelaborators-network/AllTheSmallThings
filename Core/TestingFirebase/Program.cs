@@ -18,10 +18,9 @@ namespace TestingFirebase
             string emailAddress = "prjseal@gmail.com";
             EventItem eventItem = new EventItem(10);
 
-            FirebaseHelper fbHelper = new FirebaseHelper("jyIAM1tnyy2k0y400mQgiNXKVG6jiO6lXqocQdqq", "https://all-the-small-things-7b52b.firebaseio.com/", "users", "integrations");
+            FirebaseHelper fbHelper = new FirebaseHelper();
 
-            FirebaseClient client = fbHelper.GetClient();
-            var task = fbHelper.CreateRecordAsync(integrationId, emailAddress, eventItem, client);
+            var task = fbHelper.CreateRecordAsync(integrationId, emailAddress, eventItem);
             var result = task.Result;
         }
     }

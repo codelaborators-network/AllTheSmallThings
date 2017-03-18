@@ -1,4 +1,5 @@
 ﻿using atst.Core.Authentication;
+using atst.Core.Helpers;
 using atst.Core.Integration;
 using atst.Core.Tracking;
 using Nancy;
@@ -11,9 +12,9 @@ namespace ApiRole
     {
         protected override void ApplicationStartup(TinyIoCContainer container, IPipelines pipelines)
         {
-            container.Register<IUserRegistration,UserRegistration>();
             container.Register<IXpTracking,XpTracking>();
             container.Register<IIntegrationProviders, IntegrationProviders>();
+            container.Register<IFirebaseHelper, FirebaseHelper>();
         }
     }
 }
