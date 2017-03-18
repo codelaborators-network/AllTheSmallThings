@@ -25,9 +25,9 @@ namespace atst.Core.Tracking
 
             try
             {
-                var eventItem = new EventItem(xpModelXp);
+                var eventItem = new EventItem(xpModelXp, integrationProvider);
                 
-                _firebaseHelper.CreateRecordAsync(integrationProvider, xpModelUserName.Replace('.', ','), eventItem);
+                _firebaseHelper.CreateXPRecordAsync(xpModelUserName.Replace('.', ','), eventItem);
             }
             catch (Exception e)
             {

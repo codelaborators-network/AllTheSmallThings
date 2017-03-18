@@ -14,13 +14,15 @@ namespace TestingFirebase
     {
         static void Main(string[] args)
         {
-            int integrationId = 1;
+            int integrationId = 100;
             string emailAddress = "prjseal@gmail.com";
-            EventItem eventItem = new EventItem(10);
+            int xp = 1;
+
+            EventItem eventItem = new EventItem(xp, integrationId);
 
             FirebaseHelper fbHelper = new FirebaseHelper();
 
-            var task = fbHelper.CreateRecordAsync(integrationId, emailAddress, eventItem);
+            var task = fbHelper.CreateXPRecordAsync(emailAddress.Replace(".", ","), eventItem);
             var result = task.Result;
         }
     }
