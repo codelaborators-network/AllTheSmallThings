@@ -23,6 +23,10 @@ namespace atst.Core.Tracking
         {
             var success = true;
 
+            var user = GetUser(xpModelUserName);
+            user.Xp += xpModelXp;
+
+
             try
             {
                 var eventItem = new EventItem(xpModelXp);
