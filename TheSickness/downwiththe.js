@@ -5,5 +5,5 @@ module.exports = function(youMotherGetUp) {
         return getDownWith;
     }
 
-    return ['Oh ah ah ah ah1'];
+    return ['Oh ah ah ah ah'];
 };
