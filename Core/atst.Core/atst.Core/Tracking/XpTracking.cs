@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Web.Compilation;
 using atst.Core.Authentication.Entities;
+using atst.Core.Game.Entities;
 using atst.Core.Game.Leveling;
 using atst.Core.Helpers;
+using atst.Core.Integration;
 
 namespace atst.Core.Tracking
 {
@@ -22,15 +26,18 @@ namespace atst.Core.Tracking
             Users = new List<User>();
         }
 
-        public bool ApplyTracking(string xpModelUserName, int xpModelXp, int integrationProvider)
+        public bool ApplyTracking(string xpModelUserName, int xpModelXp, IntegrationsProviderTypes integrationProvider, ActionType actionType)
         {
             var success = true;
 
             var user = GetUser(xpModelUserName);
+            user.Xp += xpModelXp;
 
             try
             {
-                var eventItem = new EventItem(xpModelXp, integrationProvider);
+
+                var eventItem = new EventItem(xpModelXp, integrationProvider, actionType);
+                
                 _firebaseHelper.CreateXPRecordAsync(xpModelUserName.Replace('.', ','), eventItem);
             }
             catch (Exception e)
@@ -48,7 +55,7 @@ namespace atst.Core.Tracking
             {
                 try
                 {
-                    var eventItem = new EventItem(xpModelXp, integrationProvider);
+                    var eventItem = new LevelItem(user.Level, ActionType.Add);
                     _firebaseHelper.CreateLevelRecordAsync(xpModelUserName.Replace('.', ','), eventItem);
                 }
                 catch (Exception e)
@@ -66,12 +73,10 @@ namespace atst.Core.Tracking
 
             if (user == null)
             {
-                user = _firebaseHelper.GetUser(userName).Result ?? new User { UserName = userName };
+                user = _firebaseHelper.GetUser(userName).Result ?? new User {UserName = userName};
 
-                Users.Add(user);
+                _levelEngine.CalculateLevel(user);
             }
-
-            _levelEngine.CalculateLevel(user);
 
             return user;
         }

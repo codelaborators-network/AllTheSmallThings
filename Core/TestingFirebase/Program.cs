@@ -14,16 +14,23 @@ namespace TestingFirebase
     {
         static void Main(string[] args)
         {
-            int integrationId = 100;
-            string emailAddress = "prjseal@gmail.com";
-            int xp = 1;
+            //int integrationId = 100;
+            //string emailAddress = "prjseal@gmail.com";
+            //int xp = 1;
 
-            EventItem eventItem = new EventItem(xp, integrationId);
+            //int level = 1;
 
-            FirebaseHelper fbHelper = new FirebaseHelper();
+            //EventItem eventItem = new EventItem(xp, integrationId, atst.Core.Game.Entities.ActionType.Add);
+            //LevelItem levelItem = new LevelItem(level, atst.Core.Game.Entities.ActionType.Add);
 
-            var task = fbHelper.CreateXPRecordAsync(emailAddress.Replace(".", ","), eventItem);
-            var result = task.Result;
+            //FirebaseHelper fbHelper = new FirebaseHelper();
+
+            //var xpTask = fbHelper.CreateXPRecordAsync(emailAddress.Replace(".", ","), eventItem);
+            //var xpResult = xpTask.Result;
+
+            //var levelTask = fbHelper.CreateLevelRecordAsync(emailAddress.Replace(".", ","), levelItem);
+            //var levelResult = levelTask.Result;
+
         }
     }
 }
