@@ -28,7 +28,7 @@ namespace asti.GitHubHookApi.Helpers
          }
       }
 
-      public string SendFilesToLinter(LintData fileData)
+      public string SendFilesToLinter(List<LintData> fileData)
       {
          var json = JsonConvert.SerializeObject(fileData);
 
