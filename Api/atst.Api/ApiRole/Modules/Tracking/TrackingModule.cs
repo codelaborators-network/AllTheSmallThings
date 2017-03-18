@@ -30,7 +30,7 @@ namespace ApiRole.Modules.Tracking
             {
                 response = new Response
                 {
-                    StatusCode = HttpStatusCode.Forbidden,
+                    StatusCode = HttpStatusCode.BadRequest,
                     ReasonPhrase = "Invalid details provided"
                 };
             }
