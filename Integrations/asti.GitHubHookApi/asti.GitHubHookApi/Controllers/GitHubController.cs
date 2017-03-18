@@ -18,7 +18,8 @@ namespace asti.GitHubHookApi.Controllers
       }
 
       [HttpPost]
-      public async void PushEndPoint([FromBody]string payload)
+      [Route("/PushEndPoint")]
+      public async void PushEndPoint(string payload)
       {
          var pushDetails = JsonConvert.DeserializeObject<GitHubPushJson>(payload);
          var commitsString = await GitHubGetHelper.PerformGetAsync(pushDetails.CommitsApiUrl());
@@ -26,16 +27,19 @@ namespace asti.GitHubHookApi.Controllers
 
          var jsFileUrls = commits.Files.Where(fi => fi.Filename.Contains(".js"));
 
-         var first = jsFileUrls.FirstOrDefault();
-            
-         var jsonToSend = new LintData
-         {
-            FileUrl = first.RawUrl,
-            ModCount = first.NumberOfModifications(),
-            UserName = commits.CommitDetails.Author.Email
-         };
+         var firstJs = jsFileUrls.FirstOrDefault();
 
-         LinterSingleton.Instance.SendFilesToLinter(jsonToSend);
+         if (firstJs != null)
+         {
+            var jsonToSend = new LintData
+            {
+               FileUrl = firstJs.RawUrl,
+               ModCount = firstJs.NumberOfModifications(),
+               UserName = commits.CommitDetails.Author.Email
+            };
+
+            LinterSingleton.Instance.SendFilesToLinter(jsonToSend);
+         }
       }
 
       [HttpGet]
