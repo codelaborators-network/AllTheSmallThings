@@ -12,15 +12,16 @@ namespace ApiRole.Tests.Modules.Authentication
 {
     public class AuthenticationModuleFixture
     {
-        private Mock<IUserRegistration> _userRegistration;
+        private readonly Mock<IUserRegistration> _userRegistration;
 
-        private Browser _browser;
+        private readonly Browser _browser;
         public AuthenticationModuleFixture()
         {
             _userRegistration = new Mock<IUserRegistration>();
             var module = new AuthenticationModule(_userRegistration.Object);
             _browser = BrowserBuilder.CreateNullBrowserForLogicTests(module);
         }
+
         #region registration
         [Fact]
         public void RegisterUser_Success()
