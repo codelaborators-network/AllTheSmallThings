@@ -29,7 +29,7 @@ namespace ApiRole.Modules.Tracking
         {
             var xpModel = this.Bind<XpModel>();
 
-            LastRequest = $"username: {xpModel.UserName} -- xp: {xpModel.Xp}";
+            LastRequest = $"username: {xpModel.UserName} -- xp: {xpModel.Xp} --- provider: {xpModel.IntegrationsProvider} ({(int)xpModel.IntegrationsProvider})";
 
             Response response;
 
