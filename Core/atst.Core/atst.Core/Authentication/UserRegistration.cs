@@ -6,17 +6,17 @@ namespace atst.Core.Authentication
     {
         public bool RegisterUser(string email, string password)
         {
-            throw new NotImplementedException();
+            return true;
         }
 
         public bool IsUserValid(string email)
         {
-            throw new NotImplementedException();
+            return true;
         }
 
         public bool AuthenticateUser(string email, string password)
         {
-            throw new NotImplementedException();
+            return true;
         }
     }
 }
