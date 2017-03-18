@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Web.Compilation;
 using atst.Core.Authentication.Entities;
 using atst.Core.Helpers;
 
@@ -6,6 +10,15 @@ namespace atst.Core.Tracking
 {
     public class XpTracking : IXpTracking
     {
+        private readonly IFirebaseHelper _firebaseHelper;
+
+        private static List<User> Users { get; set; }
+
+        public XpTracking()
+        {
+            Users = new List<User>();
+        }
+
         public bool ApplyTracking(string xpModelUserName, int xpModelXp, int integrationProvider)
         {
             var success = true;
@@ -13,19 +26,22 @@ namespace atst.Core.Tracking
             try
             {
                 var eventItem = new EventItem(xpModelXp);
-
-                var fbHelper = new FirebaseHelper("jyIAM1tnyy2k0y400mQgiNXKVG6jiO6lXqocQdqq", "https://all-the-small-things-7b52b.firebaseio.com/", "users", "integrations");
-
-                var client = fbHelper.GetClient();
-                fbHelper.CreateRecordAsync(integrationProvider, xpModelUserName.Replace('.', ','), eventItem, client);
+                
+                _firebaseHelper.CreateRecordAsync(integrationProvider, xpModelUserName.Replace('.', ','), eventItem);
             }
             catch (Exception e)
             {
                 return false;
             }
 
-
             return true;
+        }
+
+        private User GetUser(string userName)
+        {
+             return Users.FirstOrDefault(x => x.UserName == userName) ??
+                        (_firebaseHelper.GetUser(userName).Result ?? 
+                        new User { UserName = userName });
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using atst.Core.Authentication;
+using atst.Core.Helpers;
 using atst.Core.Integration;
 using atst.Core.Tracking;
 using Nancy;
@@ -13,6 +14,7 @@ namespace ApiRole
         {
             container.Register<IXpTracking,XpTracking>();
             container.Register<IIntegrationProviders, IntegrationProviders>();
+            container.Register<IFirebaseHelper, FirebaseHelper>();
         }
     }
 }
