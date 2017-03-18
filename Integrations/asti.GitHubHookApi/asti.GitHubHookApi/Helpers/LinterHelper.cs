@@ -12,7 +12,7 @@ namespace asti.GitHubHookApi.Helpers
    {
       private static string LinterPostUrl = "https://atst-eslint-integration.herokuapp.com/lint";
 
-      public static async void PerformPostAsyc(string data)
+      public static async Task<string> PerformPostAsyc(string data)
       {
          using (var client = new HttpClient())
          {
@@ -20,10 +20,7 @@ namespace asti.GitHubHookApi.Helpers
 
             var responseData = await responce.Content.ReadAsStringAsync();
 
-            if (string.IsNullOrEmpty(responseData))
-            {
-
-            }
+            return responseData;
          }
       }
    }

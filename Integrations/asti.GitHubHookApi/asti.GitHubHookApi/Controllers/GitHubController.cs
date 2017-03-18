@@ -40,7 +40,7 @@ namespace asti.GitHubHookApi.Controllers
 
       [HttpGet]
       [Route("/Test")]
-      public void Test()
+      public string Test()
       {
          var commitJson = new GitHubCommitJson
          {
@@ -75,7 +75,7 @@ namespace asti.GitHubHookApi.Controllers
             UserName = commitJson.CommitDetails.Author.Email
          };
 
-         LinterSingleton.Instance.SendFilesToLinter(jsonToSend);
+         return LinterSingleton.Instance.SendFilesToLinter(jsonToSend);
       }
    }
 }
