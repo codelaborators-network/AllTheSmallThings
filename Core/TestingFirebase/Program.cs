@@ -18,7 +18,7 @@ namespace TestingFirebase
             string emailAddress = "prjseal@gmail.com";
             int xp = 1;
 
-            EventItem eventItem = new EventItem(xp, integrationId);
+            EventItem eventItem = new EventItem(xp, integrationId, atst.Core.Game.Entities.ActionType.Add);
 
             FirebaseHelper fbHelper = new FirebaseHelper();
 

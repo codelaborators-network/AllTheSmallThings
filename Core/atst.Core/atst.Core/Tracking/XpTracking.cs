@@ -29,7 +29,7 @@ namespace atst.Core.Tracking
 
             try
             {
-                var eventItem = new EventItem(xpModelXp, integrationProvider);
+                var eventItem = new EventItem(xpModelXp, integrationProvider, Game.Entities.ActionType.Add); //TODO: pass this in
                 
                 _firebaseHelper.CreateXPRecordAsync(xpModelUserName.Replace('.', ','), eventItem);
             }
