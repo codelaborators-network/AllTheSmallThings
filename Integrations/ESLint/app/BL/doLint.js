@@ -1,11 +1,14 @@
 const request = require('request');
 const linter = require('eslint').linter;
 
-module.exports = (fileUrl) => {
+module.exports = (req) => {
+  const fileUrl = req.fileUrl;
+  const modCount = req.modCount;
+
   console.log(`Alright bro, I'm just gonna go get ${fileUrl} real quick`);
   request.get(fileUrl, (error, response, body) => {
     if (error || response.statusCode !== 200) {
-      throw new Error(`Oh crap son! We got an error on our hands man!\r\n${error}`);
+      throw new Error(`Oh crap son! We got an error on our hands man!\r\n${JSON.stringify(response)}`);
     }
 
     console.log(`Sweet as a nut, I got ${fileUrl}`);
