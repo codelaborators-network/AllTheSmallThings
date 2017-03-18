@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-using atst.Core.Game.Entities;
+﻿using atst.Core.Authentication.Entities;
 
 namespace atst.Core.Game.Leveling
 {
     public interface ILevelEngine
     {
-        int CalculateLevel(Xp xp);
-        int CalculateLevel(IList<Xp> xpEntries);
+        int CalculateLevel(User user);
     }
 }
