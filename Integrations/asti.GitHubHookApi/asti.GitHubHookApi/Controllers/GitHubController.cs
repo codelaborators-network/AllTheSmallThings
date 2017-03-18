@@ -25,21 +25,16 @@ namespace asti.GitHubHookApi.Controllers
          var commitsString = await GitHubGetHelper.PerformGetAsync(pushDetails.CommitsApiUrl());
          var commits = JsonConvert.DeserializeObject<GitHubCommitJson>(commitsString);
 
-         var jsFileUrls = commits.Files.Where(fi => fi.Filename.Contains(".js"));
+         var jsFileUrls = commits.Files
+               .Where(fi => fi.Filename.Contains(".js"))
+               .Select(fi => new LintData
+               {
+                  FileUrl = fi.RawUrl,
+                  ModCount = fi.NumberOfModifications(),
+                  UserName = commits.CommitDetails.Author.Email
+               }).ToList();
 
-         var firstJs = jsFileUrls.FirstOrDefault();
-
-         if (firstJs != null)
-         {
-            var jsonToSend = new LintData
-            {
-               FileUrl = firstJs.RawUrl,
-               ModCount = firstJs.NumberOfModifications(),
-               UserName = commits.CommitDetails.Author.Email
-            };
-
-            LinterSingleton.Instance.SendFilesToLinter(jsonToSend);
-         }
+         LinterSingleton.Instance.SendFilesToLinter(jsFileUrls);
       }
 
       [HttpGet]
@@ -68,18 +63,16 @@ namespace asti.GitHubHookApi.Controllers
             }
          };
 
-         var jsFileUrls = commitJson.Files.Where(fi => fi.Filename.Contains(".js"));
+         var jsFileUrls = commitJson.Files
+               .Where(fi => fi.Filename.Contains(".js"))
+               .Select(fi => new LintData
+               {
+                  FileUrl = fi.RawUrl,
+                  ModCount = fi.NumberOfModifications(),
+                  UserName = commitJson.CommitDetails.Author.Email
+               }).ToList();
 
-         var first = jsFileUrls.FirstOrDefault();
-
-         var jsonToSend = new LintData
-         {
-            FileUrl = first.RawUrl,
-            ModCount = first.NumberOfModifications(),
-            UserName = commitJson.CommitDetails.Author.Email
-         };
-
-         return LinterSingleton.Instance.SendFilesToLinter(jsonToSend);
+         return LinterSingleton.Instance.SendFilesToLinter(jsFileUrls);
       }
    }
 }
