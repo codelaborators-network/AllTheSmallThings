@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "atst.Core", "..\..\Core\ats
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{47416A11-72FA-49D5-8A93-2DFFB2EF1CD2}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{8BE1B1CA-B1CE-4E58-BEFE-4E81FD93996D}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestingFirebase", "..\..\Core\TestingFirebase\TestingFirebase.csproj", "{E8459530-1137-409E-A017-8DB82B581B8D}"
 EndProject
 Global
@@ -46,6 +48,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{7B73DC63-A6BB-40A4-AA2C-9C62F09BFC1B} = {8BE1B1CA-B1CE-4E58-BEFE-4E81FD93996D}
 		{A290B6BB-6BA0-4428-9268-2F730C972FB1} = {47416A11-72FA-49D5-8A93-2DFFB2EF1CD2}
 	EndGlobalSection
 EndGlobal

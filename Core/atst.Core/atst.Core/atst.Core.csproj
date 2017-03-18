@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CsQuery, Version=1.3.3.5, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Api\atst.Api\packages\CsQuery.1.3.3\lib\net40\CsQuery.dll</HintPath>
+    </Reference>
     <Reference Include="Firebase.Database, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\Api\atst.Api\packages\FirebaseDatabase.net.2.0.2\lib\portable45-net45+win8+wpa81\Firebase.Database.dll</HintPath>
     </Reference>
@@ -61,9 +64,14 @@
   <ItemGroup>
     <Compile Include="Authentication\Entities\EventItem.cs" />
     <Compile Include="Authentication\Entities\User.cs" />
+    <Compile Include="Integration\IntegrationProviders.cs" />
     <Compile Include="Authentication\IUserRegistration.cs" />
+    <Compile Include="Authentication\UserRegistration.cs" />
     <Compile Include="Helpers\FirebaseHelper.cs" />
+    <Compile Include="Integration\IIntegrationProviders.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tracking\IXpTracking.cs" />
+    <Compile Include="Tracking\XpTracking.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
