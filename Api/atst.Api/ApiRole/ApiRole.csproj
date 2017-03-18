@@ -112,8 +112,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
-    <Compile Include="Modules\Authentication\AuthenticationModule.cs" />
-    <Compile Include="Modules\Authentication\Models\UserModel.cs" />
     <Compile Include="Modules\Integrations\IntegrationsModule.cs" />
     <Compile Include="Modules\Tracking\Models\XpModel.cs" />
     <Compile Include="Modules\Tracking\TrackingModule.cs" />

@@ -11,7 +11,6 @@ namespace ApiRole
     {
         protected override void ApplicationStartup(TinyIoCContainer container, IPipelines pipelines)
         {
-            container.Register<IUserRegistration,UserRegistration>();
             container.Register<IXpTracking,XpTracking>();
             container.Register<IIntegrationProviders, IntegrationProviders>();
         }
