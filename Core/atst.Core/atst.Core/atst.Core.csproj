@@ -44,8 +44,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Authentication\Entities\User.cs" />
+    <Compile Include="Authentication\IntegrationProviders.cs" />
     <Compile Include="Authentication\IUserRegistration.cs" />
     <Compile Include="Authentication\UserRegistration.cs" />
+    <Compile Include="Integration\IIntegrationProviders.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tracking\IXpTracking.cs" />
     <Compile Include="Tracking\XpTracking.cs" />

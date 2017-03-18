@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using atst.Core.Authentication;
+using atst.Core.Integration;
 using atst.Core.Tracking;
 using Nancy;
 using Nancy.Bootstrapper;
@@ -16,6 +17,7 @@ namespace ApiRole
         {
             container.Register<IUserRegistration,UserRegistration>();
             container.Register<IXpTracking,XpTracking>();
+            container.Register<IIntegrationProviders, IntegrationProviders>();
         }
     }
 }

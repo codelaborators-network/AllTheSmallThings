@@ -82,6 +82,7 @@
   <ItemGroup>
     <Compile Include="BrowserBuilder.cs" />
     <Compile Include="Modules\Authentication\AuthenticationModuleFixture.cs" />
+    <Compile Include="Modules\Integrations\IntegrationsModuleFixture.cs" />
     <Compile Include="Modules\Tracking\TrackingModuleFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
