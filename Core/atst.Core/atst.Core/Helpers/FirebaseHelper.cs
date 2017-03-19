@@ -78,9 +78,6 @@ namespace atst.Core.Helpers
 
             userRecord.XpHistory = xpHistory.Select(x => new Game.Entities.Xp { ActionType = x.Object.ActionType, DateTime = DateTime.Parse(x.Object.TimeStamp), Value = x.Object.Value }).ToList();
 
-            List<User> userList = new List<User>();
-
-
             return userRecord;
         }
     }
