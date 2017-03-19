@@ -1,4 +1,5 @@
-﻿using atst.Core.Integration;
+﻿using atst.Core.Game.Entities;
+using atst.Core.Integration;
 using atst.Core.Tracking;
 using ApiRole.Modules.Tracking.Models;
 using Nancy;
@@ -29,7 +30,7 @@ namespace ApiRole.Modules.Tracking
         {
             var xpModel = this.Bind<XpModel>();
 
-            LastRequest = $"Received - username: {xpModel.UserName} -- xp: {xpModel.Xp} --- provider: {xpModel.IntegrationsProvider} ({(int)xpModel.IntegrationsProvider})";
+            LastRequest = $"Received - username: {xpModel.UserName} -- xp: {xpModel.Xp} --- provider: {xpModel.IntegrationsProvider} ({(int)xpModel.IntegrationsProvider}) --- actiontype: {xpModel.ActionType} ({(int)xpModel.ActionType})";
 
             Response response;
 
@@ -46,7 +47,7 @@ namespace ApiRole.Modules.Tracking
 
                 if (_xpTracking.ApplyTracking(xpModel.UserName, xpModel.Xp, xpModel.IntegrationsProvider, xpModel.ActionType))
                 {
-                    LastRequest = $"Posted - username: {xpModel.UserName} -- xp: {xpModel.Xp} --- provider: {xpModel.IntegrationsProvider} ({(int)xpModel.IntegrationsProvider})";
+                    LastRequest = $"Posted - username: {xpModel.UserName} -- xp: {xpModel.Xp} --- provider: {xpModel.IntegrationsProvider} ({(int)xpModel.IntegrationsProvider}) --- actiontype: {xpModel.ActionType} ({(int)xpModel.ActionType})";
                     response = new Response
                     {
                         StatusCode = HttpStatusCode.OK
