@@ -91,7 +91,7 @@ namespace atst.Core.Tracking
 
             #endregion Gear
 
-            return true;
+            return success;
         }
 
         private User GetUser(string userName)
