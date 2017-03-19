@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import RouteWhenAuthorized from './RouteWhenAuthorised';
-import Homepage from './HomePage';
-import Login from './Login';
-import { createBrowserHistory } from 'history';
+import Homepage from './Homepage/components/Homepage';
+import Login from './Login/components/Login';
 import { BrowserRouter, Route } from 'react-router-dom';
 
 import firebase from 'firebase';
@@ -21,7 +20,6 @@ export const db = firebaseApp.database();
 export const auth = firebaseApp.auth();
 
 export const storageKey = 'ALL_THE_SMALL_THINGS_STORAGE';
-export const history = createBrowserHistory();
 
 export const isAuthenticated = () => {
   return !!auth.currentUser || !! localStorage.getItem(storageKey);
