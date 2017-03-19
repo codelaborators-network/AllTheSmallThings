@@ -6,12 +6,13 @@ class XpAggregator {
     let total = 0;
 
     events.forEach((ev) => {
-      if (ev.AventType === ADD_EVENT) total += ev.XP;
-      if (ev.AventType === REMOVE_EVENT) total -= ev.XP;
+      console.log(ev);
+      if (ev.ActionType === ADD_EVENT) total += parseInt(ev.Value);
+      if (ev.ActionType === REMOVE_EVENT) total -= parseInt(ev.Value);
     });
 
     return total;
   }
 }
 
-export default XpAggregator;
+export default new XpAggregator();

@@ -23,7 +23,7 @@ class HomepageContent extends Component {
         console.log(user);
         const firstProfileChildKey = Object.keys(user.Profile)[0];
 
-        const totalXP = user.XPEvents ? XpAggregator.calculateTotal(user.XPEvents.values()) : 0;
+        const totalXP = user.XPEvents ? XpAggregator.calculateTotal(Object.values(user.XPEvents)) : 0;
 
         const data = {
           profile: user.Profile[firstProfileChildKey],
