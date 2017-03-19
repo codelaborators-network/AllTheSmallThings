@@ -4,6 +4,6 @@ namespace atst.Core.Game.Leveling
 {
     public interface ILevelEngine
     {
-        int CalculateLevel(User user);
+        void CalculateLevel(User user);
     }
 }

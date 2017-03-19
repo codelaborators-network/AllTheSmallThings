@@ -17,7 +17,7 @@ namespace atst.Core.Game.Leveling
         }
 
 
-        public int CalculateLevel(User user)
+        public void CalculateLevel(User user)
         {
             var level = 1;
 
@@ -28,9 +28,7 @@ namespace atst.Core.Game.Leveling
                 level = (int) (LevelerValue * Math.Sqrt(xp));
             }
 
-            user.Xp = xp;
-
-            return level;
+            user.Level = level;
         }
     }
 }

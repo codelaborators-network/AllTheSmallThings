@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Web.Compilation;
 using atst.Core.Authentication.Entities;
 using atst.Core.Game.Entities;
+using atst.Core.Game.Experience;
 using atst.Core.Game.Leveling;
 using atst.Core.Helpers;
 using atst.Core.Integration;
@@ -15,15 +16,13 @@ namespace atst.Core.Tracking
     {
         private readonly IFirebaseHelper _firebaseHelper;
         private readonly ILevelEngine _levelEngine;
+        private readonly IXpAggregator _xpAggregator;
 
-        private static List<User> Users { get; set; }
-
-        public XpTracking(IFirebaseHelper firebaseHelper, ILevelEngine levelEngine)
+        public XpTracking(IFirebaseHelper firebaseHelper, ILevelEngine levelEngine, IXpAggregator xpAggregator)
         {
             _firebaseHelper = firebaseHelper;
             _levelEngine = levelEngine;
-
-            Users = new List<User>();
+            _xpAggregator = xpAggregator;
         }
 
         public bool ApplyTracking(string xpModelUserName, int xpModelXp, IntegrationsProviderTypes integrationProvider, ActionType actionType)
@@ -44,6 +43,8 @@ namespace atst.Core.Tracking
             }
 
             var orginallevel = user.Level;
+
+            user = GetUser(xpModelUserName);
             _levelEngine.CalculateLevel(user);
 
             if (user.Level > orginallevel)
@@ -64,16 +65,15 @@ namespace atst.Core.Tracking
 
         private User GetUser(string userName)
         {
-            var user = Users.FirstOrDefault(x => x.UserName == userName);
+            userName = userName.Replace('.', ',');
 
-            if (user == null)
-            {
-                user =  _firebaseHelper.GetUserAsync(userName).Result ?? new User {UserName = userName};
+            var user = _firebaseHelper.GetUserAsync(userName).Result ?? new User { UserName = userName };
 
-                var level = user.LevelHistory.OrderByDescending(x => x.DateTime).FirstOrDefault();
+            var level = user.LevelHistory.OrderByDescending(x => x.DateTime).FirstOrDefault();
 
-                user.Level = level?.Value ?? 0;
-            }
+            user.Level = level?.Value ?? 0;
+            user.Xp = _xpAggregator.CalculateXp(user.XpHistory);
+            _levelEngine.CalculateLevel(user);
 
             return user;
         }
