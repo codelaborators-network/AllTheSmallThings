@@ -1,0 +1,114 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <h1>Customer Service Logger</h1>
+    <div class="row">
+        <div class="col-xs-6">
+            <input type="text" id="username" placeholder="username" />
+        </div>
+        <div class="col-xs-6">
+            <a id="btn-signin" class="btn btn-success btn-lg">Sign in</a>
+        </div>
+    </div>
+    <p class="lead">Log your customer service interaction by clicking "Start" when you begin your conversation with a customer</p>
+    <p class="lead">Once the customer is satisfied with the service you have suplied, click "Stop"</p>
+    <div class="pull-left"><a id="btn-start" class="btn btn-success btn-lg">Start</a></div>
+    <div class="pull-left"><a id="btn-stop" class="btn btn-success btn-lg" style="display:none;">Stop</a></div>
+
+        <div id="clockdiv" style="display:none;">
+            <div>
+                <span class="minutes"></span>
+                <div class="smalltext">Minutes</div>
+            </div>
+            <div>
+                <span class="seconds"></span>
+                <div class="smalltext">Seconds</div>
+            </div>
+        </div>
+</div>
+
+@section scripts{
+<script type="text/javascript">
+    var running = false;
+    var timeInterval = null;
+
+    function getTimeRemaining(endtime) {
+        var t = Date.parse(endtime) - Date.parse(new Date());
+        var seconds = Math.floor((t / 1000) % 60);
+        var minutes = Math.floor((t / 1000 / 60) % 60);
+        return {
+            'minutes': minutes,
+            'seconds': seconds
+        };
+    }
+
+    function initializeClock(id, endtime) {
+        var clock = document.getElementById(id);
+        var minutesSpan = clock.querySelector('.minutes');
+        var secondsSpan = clock.querySelector('.seconds');
+
+        function updateClock() {
+            if (running) {
+                var t = getTimeRemaining(endtime);
+
+                minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
+                secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
+
+                if (t.total <= 0) {
+                    clearInterval(timeinterval);
+                }
+            }
+        }
+
+        updateClock();
+        var timeinterval = setInterval(updateClock, 1000);
+    }
+
+    $(document).ready(function () {
+        $('#btn-signin').on('click', function () {
+            $('#username').attr('disabled', 'disabled');
+            $('#btn-signin').hide();
+        });
+        
+        $('#btn-start').on('click', function () {
+            if ($('#username').val().length === 0) {
+                alert('Please sign in');
+            } else {
+                $('#btn-start').hide();
+                $('#btn-stop').show();
+                $('#clockdiv').show();
+                running = true;
+                var deadline = new Date(Date.parse(new Date()) + 15 * 60 * 1000);
+                initializeClock('clockdiv', deadline);
+            }
+        });
+
+        $('#btn-stop').on('click', function () {
+            $('#btn-start').hide();
+            $('#btn-stop').hide();
+
+            running = false;
+
+            var timeRemaining = ($('.minutes').text() * 60) + $('.seconds').text();
+
+            var route = 'http://asticustomerserviceapi20170319054500.azurewebsites.net/';
+            var model = {
+                username: $('#username').val(),
+                completed: timeRemaining > 0,
+                timeRemaining: timeRemaining
+            }
+            $.post(route, model, function () {
+            }).fail(function () {
+
+            }).always(function () {
+                $('#btn-start').show();
+                $('#btn-stop').hide();
+                var deadline = new Date(Date.parse(new Date()) + 15 * 60 * 1000);
+                initializeClock('clockdiv', deadline);
+            });
+        });
+    });
+</script>
+}
