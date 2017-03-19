@@ -114,6 +114,7 @@
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Modules\BaseModule.cs" />
     <Compile Include="Modules\Integrations\IntegrationsModule.cs" />
+    <Compile Include="Modules\Stats\StatsModule.cs" />
     <Compile Include="Modules\Tracking\Models\XpModel.cs" />
     <Compile Include="Modules\Tracking\TrackingModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
