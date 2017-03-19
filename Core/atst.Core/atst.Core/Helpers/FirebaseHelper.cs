@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using atst.Core.Authentication.Entities;
 using Firebase.Database.Query;
+using Newtonsoft.Json.Linq;
 
 namespace atst.Core.Helpers
 {
@@ -77,6 +78,35 @@ namespace atst.Core.Helpers
             return record.Key;
         }
 
+        public async Task<List<string>> GetUserNamesAsync()
+        {
+            List<string> userNames = new List<string>();
+
+            var tasks = new List<Task>
+            {
+                Task.Factory.StartNew(
+                    () =>
+                    {
+                        var userNamesTask = Client()
+                            .Child(_usersDocumentAlias)
+                            .OrderByKey()
+                            .OnceAsync<Object>();
+
+                        userNamesTask.Wait();
+
+                        foreach(var user in userNamesTask.Result)
+                        {
+                            userNames.Add(user.Key);
+                        }
+                    }
+                )
+            };
+
+            Task.WaitAll(tasks.ToArray());
+
+            return userNames;
+        }
+
         public async Task<User> GetUserAsync(string userName)
         {
             User userRecord = new User
@@ -101,7 +131,7 @@ namespace atst.Core.Helpers
                         userRecord.LevelHistory =
                             levelHistory.Result.Select(
                                 x =>
-                                    new Game.Entities.Level
+                                    new Game.Entities.GeneralEvent
                                     {
                                         ActionType = x.Object.ActionType,
                                         DateTime = DateTime.Parse(x.Object.TimeStamp),
@@ -125,6 +155,52 @@ namespace atst.Core.Helpers
                             xpHistory.Result.Select(
                                 x =>
                                     new Game.Entities.Xp
+                                    {
+                                        ActionType = x.Object.ActionType,
+                                        DateTime = DateTime.Parse(x.Object.TimeStamp),
+                                        Value = x.Object.Value
+                                    }).ToList();
+                    }
+                ),
+                Task.Factory.StartNew(
+                    () =>
+                    {
+                        var gearHistory = Client()
+                            .Child(_usersDocumentAlias)
+                            .Child(userRecord.UserName)
+                            .Child(_gearEventAlias)
+                            .OrderByKey()
+                            .OnceAsync<GeneralItem>();
+
+                        gearHistory.Wait();
+
+                        userRecord.GearHistory =
+                            gearHistory.Result.Select(
+                                x =>
+                                    new Game.Entities.GeneralEvent
+                                    {
+                                        ActionType = x.Object.ActionType,
+                                        DateTime = DateTime.Parse(x.Object.TimeStamp),
+                                        Value = x.Object.Value
+                                    }).ToList();
+                    }
+                ),
+                Task.Factory.StartNew(
+                    () =>
+                    {
+                        var healthHistory = Client()
+                            .Child(_usersDocumentAlias)
+                            .Child(userRecord.UserName)
+                            .Child(_healthEventAlias)
+                            .OrderByKey()
+                            .OnceAsync<GeneralItem>();
+
+                        healthHistory.Wait();
+
+                        userRecord.HealthHistory =
+                            healthHistory.Result.Select(
+                                x =>
+                                    new Game.Entities.GeneralEvent
                                     {
                                         ActionType = x.Object.ActionType,
                                         DateTime = DateTime.Parse(x.Object.TimeStamp),
