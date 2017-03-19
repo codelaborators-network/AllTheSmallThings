@@ -17,8 +17,8 @@
 }
 
 /* Set width on the form input elements since they're 100% wide by default */
-input,
 select,
+input,
 textarea {
     max-width: 280px;
 }
@@ -50,4 +50,21 @@ textarea {
 .smalltext {
     padding-top: 5px;
     font-size: 16px;
+}
+
+footer .outer {
+    text-align: center
+}
+
+    footer .outer .inner {
+        display: inline-block
+    }
+
+.user-details{
+    margin-bottom: 2em;
+    border: 1px solid black;
+}
+
+.user-header{
+    padding-bottom: 1em;
 }

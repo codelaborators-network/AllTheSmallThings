@@ -26,7 +26,7 @@ namespace asti.GitHubHookApi.Controllers
          var commits = JsonConvert.DeserializeObject<GitHubCommitJson>(commitsString);
 
          var jsFileUrls = commits.Files
-               .Where(fi => fi.Filename.Contains(".js"))
+               .Where(fi => fi.Filename.EndsWith(".js"))
                .Select(fi => new LintData
                {
                   FileUrl = fi.RawUrl,

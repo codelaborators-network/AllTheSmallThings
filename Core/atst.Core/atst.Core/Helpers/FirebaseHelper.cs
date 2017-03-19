@@ -19,6 +19,7 @@ namespace atst.Core.Helpers
         private static string _levelEventAlias => "Levels";
         private static string _gearEventAlias => "Gear";
         private static string _healthEventAlias => "Health";
+        private static string _profileAlias => "Profile";
 
         public FirebaseHelper()
         {
@@ -74,6 +75,17 @@ namespace atst.Core.Helpers
               .Child(userName)
               .Child(_healthEventAlias)
               .PostAsync(generalItem);
+
+            return record.Key;
+        }
+
+        public async Task<string> CreateProfileRecordAsync(string userName, ProfileItem profileItem)
+        {
+            var record = await Client()
+              .Child(_usersDocumentAlias)
+              .Child(userName)
+              .Child(_profileAlias)
+              .PostAsync(profileItem);
 
             return record.Key;
         }
