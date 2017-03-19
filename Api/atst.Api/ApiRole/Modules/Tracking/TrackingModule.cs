@@ -44,7 +44,7 @@ namespace ApiRole.Modules.Tracking
             else
             {
 
-                if (_xpTracking.ApplyTracking(xpModel.UserName, xpModel.Xp, (int)IntegrationsProviderTypes.GitHub))
+                if (_xpTracking.ApplyTracking(xpModel.UserName, xpModel.Xp, xpModel.IntegrationsProvider, xpModel.ActionType))
                 {
                     LastRequest = $"Posted - username: {xpModel.UserName} -- xp: {xpModel.Xp} --- provider: {xpModel.IntegrationsProvider} ({(int)xpModel.IntegrationsProvider})";
                     response = new Response

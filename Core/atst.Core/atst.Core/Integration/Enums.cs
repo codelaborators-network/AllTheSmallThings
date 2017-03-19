@@ -9,6 +9,7 @@ namespace atst.Core.Integration
         SourceSafe = 400,
         SVN = 500,
         VSTS = 600,
-        TFSOnsite = 700
+        TFSOnsite = 700,
+        Trello = 800
     }
 }

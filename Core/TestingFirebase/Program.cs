@@ -14,22 +14,22 @@ namespace TestingFirebase
     {
         static void Main(string[] args)
         {
-            int integrationId = 100;
-            string emailAddress = "prjseal@gmail.com";
-            int xp = 1;
+            //int integrationId = 100;
+            //string emailAddress = "prjseal@gmail.com";
+            //int xp = 1;
 
-            int level = 1;
+            //int level = 1;
 
-            EventItem eventItem = new EventItem(xp, integrationId, atst.Core.Game.Entities.ActionType.Add);
-            LevelItem levelItem = new LevelItem(level, atst.Core.Game.Entities.ActionType.Add);
+            //EventItem eventItem = new EventItem(xp, integrationId, atst.Core.Game.Entities.ActionType.Add);
+            //LevelItem levelItem = new LevelItem(level, atst.Core.Game.Entities.ActionType.Add);
 
-            FirebaseHelper fbHelper = new FirebaseHelper();
+            //FirebaseHelper fbHelper = new FirebaseHelper();
 
-            var xpTask = fbHelper.CreateXPRecordAsync(emailAddress.Replace(".", ","), eventItem);
-            var xpResult = xpTask.Result;
+            //var xpTask = fbHelper.CreateXPRecordAsync(emailAddress.Replace(".", ","), eventItem);
+            //var xpResult = xpTask.Result;
 
-            var levelTask = fbHelper.CreateLevelRecordAsync(emailAddress.Replace(".", ","), levelItem);
-            var levelResult = levelTask.Result;
+            //var levelTask = fbHelper.CreateLevelRecordAsync(emailAddress.Replace(".", ","), levelItem);
+            //var levelResult = levelTask.Result;
 
             var user = fbHelper.GetUser("prjseal@gmail,com");
             var userResult = user.Result;

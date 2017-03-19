@@ -14,8 +14,8 @@ namespace atst.Core.Helpers
         private string _appSecret { get; set; }
         private string _databaseUrl { get; set; }
         private string _usersDocumentAlias { get; set; }
-        private string _xpEventAlias => "XPEvents";
-        private string _levelEventAlias => "Levels";
+        private static string _xpEventAlias => "XPEvents";
+        private static string _levelEventAlias => "Levels";
 
         public FirebaseHelper()
         {
@@ -52,7 +52,7 @@ namespace atst.Core.Helpers
               .Child(_levelEventAlias)
               .PostAsync(levelItem);
 
-            return string.Empty;
+            return record.Key;
         }
 
         public async Task<User> GetUser(string userName)
