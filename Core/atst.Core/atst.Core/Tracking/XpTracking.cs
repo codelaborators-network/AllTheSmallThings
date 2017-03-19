@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Compilation;
 using atst.Core.Authentication.Entities;
@@ -35,7 +36,19 @@ namespace atst.Core.Tracking
             var user = GetUser(xpModelUserName);
 
             #region xp logic
-            user.Xp += xpModelXp;
+
+            switch (actionType)
+            {
+                case ActionType.Add:
+                        user.Xp += xpModelXp;
+                    break;
+                case ActionType.Remove:
+                        user.Xp -= xpModelXp;
+                    break;
+                default:
+                    break;
+            }
+
 
             try
             {
@@ -51,15 +64,15 @@ namespace atst.Core.Tracking
             #region level logic
 
             var orginallevel = user.Level;
-
+            Thread.Sleep(1000);
             user = GetUser(xpModelUserName);
             _levelEngine.CalculateLevel(user);
 
-            if (user.Level > orginallevel)
+            if (user.Level != orginallevel)
             {
                 try
                 {
-                    var eventItem = new GeneralItem(user.Level, ActionType.Add);
+                    var eventItem = new GeneralItem(user.Level, actionType);
                     _firebaseHelper.CreateLevelRecordAsync(xpModelUserName.Replace('.', ','), eventItem);
                 }
                 catch (Exception e)
@@ -71,23 +84,25 @@ namespace atst.Core.Tracking
 
             #region Gear
 
-            var totalGearToAdd = xpModelXp / 50;
-
-            for (var i = 0; i < totalGearToAdd; i++)
+            if (actionType == ActionType.Add)
             {
-                try
-                {
-                    var gearItem = _armoury.CreateRandomWeapon();
+                var totalGearToAdd = xpModelXp / 50;
 
-                    var eventItem = new GeneralItem(gearItem.Id, ActionType.Add);
-                    _firebaseHelper.CreateGearRecordAsync(xpModelUserName.Replace('.', ','), eventItem);
-                }
-                catch (Exception e)
+                for (var i = 0; i < totalGearToAdd; i++)
                 {
-                    return false;
+                    try
+                    {
+                        var gearItem = _armoury.CreateRandomWeapon();
+
+                        var eventItem = new GeneralItem(gearItem.Id, ActionType.Add);
+                        _firebaseHelper.CreateGearRecordAsync(xpModelUserName.Replace('.', ','), eventItem);
+                    }
+                    catch (Exception e)
+                    {
+                        return false;
+                    }
                 }
             }
-
 
             #endregion Gear
 

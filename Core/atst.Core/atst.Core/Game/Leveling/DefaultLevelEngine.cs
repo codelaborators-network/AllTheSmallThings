@@ -7,7 +7,6 @@ namespace atst.Core.Game.Leveling
 {
     public class DefaultLevelEngine : ILevelEngine
     {
-        private const int LevelerValue = 5;
 
         private readonly IXpAggregator _xpAggregator;
 
@@ -25,7 +24,7 @@ namespace atst.Core.Game.Leveling
 
             if (xp>0)
             {
-                level = (int) (LevelerValue * Math.Sqrt(xp));
+                level = (int) Math.Sqrt(xp);
             }
 
             user.Level = level;
