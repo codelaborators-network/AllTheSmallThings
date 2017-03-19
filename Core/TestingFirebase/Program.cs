@@ -14,16 +14,43 @@ namespace TestingFirebase
     {
         static void Main(string[] args)
         {
-            int integrationId = 100;
+            //int integrationId = 100;
             string emailAddress = "prjseal@gmail.com";
-            int xp = 1;
+            //int xp = 1;
 
-            EventItem eventItem = new EventItem(xp, integrationId);
+            //int level = 1;
+            int gearValue = 1;
+            int healthValue = 1;
+
+            //EventItem eventItem = new EventItem(xp, integrationId, atst.Core.Game.Entities.ActionType.Add);
+            //LevelItem levelItem = new LevelItem(level, atst.Core.Game.Entities.ActionType.Add);
+            GeneralItem gearItem = new GeneralItem(gearValue, atst.Core.Game.Entities.ActionType.Add);
+
+            GeneralItem healthItem = new GeneralItem(healthValue, atst.Core.Game.Entities.ActionType.Add);
 
             FirebaseHelper fbHelper = new FirebaseHelper();
 
-            var task = fbHelper.CreateXPRecordAsync(emailAddress.Replace(".", ","), eventItem);
-            var result = task.Result;
+            //var xpTask = fbHelper.CreateXPRecordAsync(emailAddress.Replace(".", ","), eventItem);
+            //var xpResult = xpTask.Result;
+
+            //var levelTask = fbHelper.CreateLevelRecordAsync(emailAddress.Replace(".", ","), levelItem);
+            //var levelResult = levelTask.Result;
+
+            //var gearTask = fbHelper.CreateGearRecordAsync(emailAddress.Replace(".", ","), gearItem);
+            //var gearResult = gearTask.Result;
+
+            //var healthTask = fbHelper.CreateHealthRecordAsync(emailAddress.Replace(".", ","), healthItem);
+            //var healthResult = healthTask.Result;
+
+            //var userTask = fbHelper.GetUserAsync("prjseal@gmail,com");
+            //userTask.Wait();
+
+
+            var userNamesTask = fbHelper.GetUserNamesAsync();
+            userNamesTask.Wait();
+
+            var userResult = userNamesTask.Result;
+            //var item = user;
         }
     }
 }

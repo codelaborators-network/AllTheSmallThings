@@ -6,21 +6,23 @@ using System.Text;
 using System.Threading.Tasks;
 using atst.Core.Authentication.Entities;
 using Firebase.Database.Query;
+using Newtonsoft.Json.Linq;
 
 namespace atst.Core.Helpers
 {
     public class FirebaseHelper : IFirebaseHelper
     {
-        private string _appSecret { get; set; }
-        private string _databaseUrl { get; set; }
-        private string _usersDocumentAlias { get; set; }
-        private string _xpEventAlias => "XPEvents";
+        private string _appSecret => "jyIAM1tnyy2k0y400mQgiNXKVG6jiO6lXqocQdqq";
+        private string _databaseUrl => "https://all-the-small-things-7b52b.firebaseio.com/";
+        private string _usersDocumentAlias => "users";
+        private static string _xpEventAlias => "XPEvents";
+        private static string _levelEventAlias => "Levels";
+        private static string _gearEventAlias => "Gear";
+        private static string _healthEventAlias => "Health";
 
         public FirebaseHelper()
         {
-            _appSecret = "jyIAM1tnyy2k0y400mQgiNXKVG6jiO6lXqocQdqq";
-            _databaseUrl = "https://all-the-small-things-7b52b.firebaseio.com/";
-            _usersDocumentAlias = "users";
+
         }
 
         private FirebaseClient Client()
@@ -43,20 +45,176 @@ namespace atst.Core.Helpers
             return record.Key;
         }
 
-        public async Task<string> CreateLevelRecordAsync(string userName, EventItem eventItem)
+        public async Task<string> CreateLevelRecordAsync(string userName, GeneralItem generalItem)
         {
-            //Over to you my friend!
+            var record = await Client()
+              .Child(_usersDocumentAlias)
+              .Child(userName)
+              .Child(_levelEventAlias)
+              .PostAsync(generalItem);
 
-
-            return string.Empty;
+            return record.Key;
         }
 
-        public async Task<User> GetUser(string userName)
+        public async Task<string> CreateGearRecordAsync(string userName, GeneralItem generalItem)
         {
-            //FILL ME IN BIG BOY!!
+            var record = await Client()
+              .Child(_usersDocumentAlias)
+              .Child(userName)
+              .Child(_gearEventAlias)
+              .PostAsync(generalItem);
+
+            return record.Key;
+        }
+
+        public async Task<string> CreateHealthRecordAsync(string userName, GeneralItem generalItem)
+        {
+            var record = await Client()
+              .Child(_usersDocumentAlias)
+              .Child(userName)
+              .Child(_healthEventAlias)
+              .PostAsync(generalItem);
+
+            return record.Key;
+        }
+
+        public async Task<List<string>> GetUserNamesAsync()
+        {
+            List<string> userNames = new List<string>();
+
+            var tasks = new List<Task>
+            {
+                Task.Factory.StartNew(
+                    () =>
+                    {
+                        var userNamesTask = Client()
+                            .Child(_usersDocumentAlias)
+                            .OrderByKey()
+                            .OnceAsync<Object>();
+
+                        userNamesTask.Wait();
+
+                        foreach(var user in userNamesTask.Result)
+                        {
+                            userNames.Add(user.Key);
+                        }
+                    }
+                )
+            };
+
+            Task.WaitAll(tasks.ToArray());
+
+            return userNames;
+        }
+
+        public async Task<User> GetUserAsync(string userName)
+        {
+            User userRecord = new User
+            {
+                UserName = userName.Replace('.', ',')
+            };
+
+            var tasks = new List<Task>
+            {
+                Task.Factory.StartNew(
+                    () =>
+                    {
+                        var levelHistory = Client()
+                            .Child(_usersDocumentAlias)
+                            .Child(userRecord.UserName)
+                            .Child(_levelEventAlias)
+                            .OrderByKey()
+                            .OnceAsync<GeneralItem>();
+
+                        levelHistory.Wait();
+
+                        userRecord.LevelHistory =
+                            levelHistory.Result.Select(
+                                x =>
+                                    new Game.Entities.GeneralEvent
+                                    {
+                                        ActionType = x.Object.ActionType,
+                                        DateTime = DateTime.Parse(x.Object.TimeStamp),
+                                        Value = x.Object.Value
+                                    }).ToList();
+                    }
+                ),
+                Task.Factory.StartNew(
+                    () =>
+                    {
+                        var xpHistory = Client()
+                            .Child(_usersDocumentAlias)
+                            .Child(userRecord.UserName)
+                            .Child(_xpEventAlias)
+                            .OrderByKey()
+                            .OnceAsync<EventItem>();
+
+                        xpHistory.Wait();
+
+                        userRecord.XpHistory =
+                            xpHistory.Result.Select(
+                                x =>
+                                    new Game.Entities.Xp
+                                    {
+                                        ActionType = x.Object.ActionType,
+                                        DateTime = DateTime.Parse(x.Object.TimeStamp),
+                                        Value = x.Object.Value
+                                    }).ToList();
+                    }
+                ),
+                Task.Factory.StartNew(
+                    () =>
+                    {
+                        var gearHistory = Client()
+                            .Child(_usersDocumentAlias)
+                            .Child(userRecord.UserName)
+                            .Child(_gearEventAlias)
+                            .OrderByKey()
+                            .OnceAsync<GeneralItem>();
+
+                        gearHistory.Wait();
+
+                        userRecord.GearHistory =
+                            gearHistory.Result.Select(
+                                x =>
+                                    new Game.Entities.GeneralEvent
+                                    {
+                                        ActionType = x.Object.ActionType,
+                                        DateTime = DateTime.Parse(x.Object.TimeStamp),
+                                        Value = x.Object.Value
+                                    }).ToList();
+                    }
+                ),
+                Task.Factory.StartNew(
+                    () =>
+                    {
+                        var healthHistory = Client()
+                            .Child(_usersDocumentAlias)
+                            .Child(userRecord.UserName)
+                            .Child(_healthEventAlias)
+                            .OrderByKey()
+                            .OnceAsync<GeneralItem>();
+
+                        healthHistory.Wait();
+
+                        userRecord.HealthHistory =
+                            healthHistory.Result.Select(
+                                x =>
+                                    new Game.Entities.GeneralEvent
+                                    {
+                                        ActionType = x.Object.ActionType,
+                                        DateTime = DateTime.Parse(x.Object.TimeStamp),
+                                        Value = x.Object.Value
+                                    }).ToList();
+                    }
+                )
+            };
 
 
-            return new User();
+
+            Task.WaitAll(tasks.ToArray());
+
+            return userRecord;
         }
     }
 }

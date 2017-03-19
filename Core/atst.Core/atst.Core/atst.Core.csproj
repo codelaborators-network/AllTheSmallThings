@@ -62,11 +62,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Authentication\Entities\LevelItem.cs" />
     <Compile Include="Authentication\Entities\EventItem.cs" />
     <Compile Include="Authentication\Entities\User.cs" />
     <Compile Include="Game\Entities\enums.cs" />
     <Compile Include="Game\Entities\Level.cs" />
     <Compile Include="Game\Entities\Xp.cs" />
+    <Compile Include="Game\Gear\Armoury.cs" />
+    <Compile Include="Game\Gear\IArmoury.cs" />
+    <Compile Include="Game\Gear\IGear.cs" />
+    <Compile Include="Game\Gear\Defensive\WoodenShield.cs" />
+    <Compile Include="Game\Gear\Offense\WoodenSpear.cs" />
     <Compile Include="Game\Leveling\ILevelEngine.cs" />
     <Compile Include="Game\Leveling\DefaultLevelEngine.cs" />
     <Compile Include="Game\Experience\IXpAggregator.cs" />
@@ -84,7 +90,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Game\Gear\" />
+    <Folder Include="Stats\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,9 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Web.Compilation;
 using atst.Core.Authentication.Entities;
+using atst.Core.Game.Entities;
+using atst.Core.Game.Experience;
+using atst.Core.Game.Gear;
 using atst.Core.Game.Leveling;
 using atst.Core.Helpers;
+using atst.Core.Integration;
 
 namespace atst.Core.Tracking
 {
@@ -11,66 +17,93 @@ namespace atst.Core.Tracking
     {
         private readonly IFirebaseHelper _firebaseHelper;
         private readonly ILevelEngine _levelEngine;
+        private readonly IXpAggregator _xpAggregator;
+        private readonly IArmoury _armoury;
 
-        private static List<User> Users { get; set; }
-
-        public XpTracking(IFirebaseHelper firebaseHelper, ILevelEngine levelEngine)
+        public XpTracking(IFirebaseHelper firebaseHelper, ILevelEngine levelEngine, IXpAggregator xpAggregator, IArmoury armoury)
         {
             _firebaseHelper = firebaseHelper;
             _levelEngine = levelEngine;
-
-            Users = new List<User>();
+            _xpAggregator = xpAggregator;
+            _armoury = armoury;
         }
 
-        public bool ApplyTracking(string xpModelUserName, int xpModelXp, int integrationProvider)
+        public bool ApplyTracking(string xpModelUserName, int xpModelXp, IntegrationsProviderTypes integrationProvider, ActionType actionType)
         {
             var success = true;
 
             var user = GetUser(xpModelUserName);
 
+            #region xp logic
+            user.Xp += xpModelXp;
 
             try
             {
-                var eventItem = new EventItem(xpModelXp, integrationProvider);
-
+                var eventItem = new EventItem(xpModelXp, integrationProvider, actionType);
                 _firebaseHelper.CreateXPRecordAsync(xpModelUserName.Replace('.', ','), eventItem);
             }
             catch (Exception e)
             {
                 return false;
             }
+            #endregion xp logic
 
+            #region level logic
 
-            user.Xp += xpModelXp;
+            var orginallevel = user.Level;
+
+            user = GetUser(xpModelUserName);
             _levelEngine.CalculateLevel(user);
 
-            try
+            if (user.Level > orginallevel)
             {
-                var eventItem = new EventItem(xpModelXp, integrationProvider);
-
-                _firebaseHelper.CreateLevelRecordAsync(xpModelUserName.Replace('.', ','), eventItem);
+                try
+                {
+                    var eventItem = new GeneralItem(user.Level, ActionType.Add);
+                    _firebaseHelper.CreateLevelRecordAsync(xpModelUserName.Replace('.', ','), eventItem);
+                }
+                catch (Exception e)
+                {
+                    return false;
+                }
             }
-            catch (Exception e)
+            #endregion level logic
+
+            #region Gear
+
+            var totalGearToAdd = xpModelXp / 50;
+
+            for (var i = 0; i < totalGearToAdd; i++)
             {
-                return false;
+                try
+                {
+                    var gearItem = _armoury.CreateRandomWeapon();
+
+                    var eventItem = new GeneralItem(gearItem.Id, ActionType.Add);
+                    _firebaseHelper.CreateGearRecordAsync(xpModelUserName.Replace('.', ','), eventItem);
+                }
+                catch (Exception e)
+                {
+                    return false;
+                }
             }
 
 
+            #endregion Gear
 
-            return true;
+            return success;
         }
 
         private User GetUser(string userName)
         {
-            var user = Users.FirstOrDefault(x => x.UserName == userName);
+            userName = userName.Replace('.', ',');
 
-            if (user == null)
-            {
-                user = _firebaseHelper.GetUser(userName).Result ?? new User { UserName = userName };
+            var user = _firebaseHelper.GetUserAsync(userName).Result ?? new User { UserName = userName };
 
-                Users.Add(user);
-            }
+            var level = user.LevelHistory.OrderByDescending(x => x.DateTime).FirstOrDefault();
 
+            user.Level = level?.Value ?? 0;
+            user.Xp = _xpAggregator.CalculateXp(user.XpHistory);
             _levelEngine.CalculateLevel(user);
 
             return user;
