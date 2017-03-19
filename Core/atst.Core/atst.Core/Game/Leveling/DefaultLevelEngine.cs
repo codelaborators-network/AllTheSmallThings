@@ -28,6 +28,8 @@ namespace atst.Core.Game.Leveling
                 level = (int) (LevelerValue * Math.Sqrt(xp));
             }
 
+            user.Xp = xp;
+
             return level;
         }
     }

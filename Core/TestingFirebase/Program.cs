@@ -31,9 +31,9 @@ namespace TestingFirebase
             //var levelTask = fbHelper.CreateLevelRecordAsync(emailAddress.Replace(".", ","), levelItem);
             //var levelResult = levelTask.Result;
 
-            var user = fbHelper.GetUser("prjseal@gmail,com");
-            var userResult = user.Result;
-            var item = user;
+            //var user = fbHelper.GetUser("prjseal@gmail,com");
+            //var userResult = user.Result;
+            //var item = user;
         }
     }
 }

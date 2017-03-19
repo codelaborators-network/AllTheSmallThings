@@ -35,9 +35,7 @@ namespace atst.Core.Tracking
 
             try
             {
-
                 var eventItem = new EventItem(xpModelXp, integrationProvider, actionType);
-                
                 _firebaseHelper.CreateXPRecordAsync(xpModelUserName.Replace('.', ','), eventItem);
             }
             catch (Exception e)
@@ -45,10 +43,7 @@ namespace atst.Core.Tracking
                 return false;
             }
 
-            user.Xp += xpModelXp;
-
             var orginallevel = user.Level;
-
             _levelEngine.CalculateLevel(user);
 
             if (user.Level > orginallevel)
@@ -75,7 +70,9 @@ namespace atst.Core.Tracking
             {
                 user = _firebaseHelper.GetUser(userName).Result ?? new User {UserName = userName};
 
-                _levelEngine.CalculateLevel(user);
+                var level = user.LevelHistory.OrderByDescending(x => x.DateTime).FirstOrDefault();
+
+                user.Level = level?.Value ?? 0;
             }
 
             return user;
