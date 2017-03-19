@@ -55,28 +55,66 @@ namespace atst.Core.Helpers
             return record.Key;
         }
 
-        public async Task<User> GetUser(string userName)
+        public async Task<User> GetUserAsync(string userName)
         {
-            User userRecord = new User();
-            userRecord.UserName = userName;
+            User userRecord = new User
+            {
+                UserName = userName.Replace('.', ',')
+            };
 
-            var levelHistory = await Client()
-              .Child(_usersDocumentAlias)
-              .Child(userName)
-              .Child(_levelEventAlias)
-              .OrderByKey()
-              .OnceAsync<LevelItem>();
+            var tasks = new List<Task>
+            {
+                Task.Factory.StartNew(
+                    () =>
+                    {
+                        var levelHistory = Client()
+                            .Child(_usersDocumentAlias)
+                            .Child(userRecord.UserName)
+                            .Child(_levelEventAlias)
+                            .OrderByKey()
+                            .OnceAsync<LevelItem>();
 
-            userRecord.LevelHistory = levelHistory.Select(x=> new Game.Entities.Level { ActionType=x.Object.ActionType, DateTime = DateTime.Parse(x.Object.TimeStamp), Value = x.Object.Value  }).ToList();
+                        levelHistory.Wait();
 
-            var xpHistory = await Client()
-              .Child(_usersDocumentAlias)
-              .Child(userName)
-              .Child(_xpEventAlias)
-              .OrderByKey()
-              .OnceAsync<EventItem>();
+                        userRecord.LevelHistory =
+                            levelHistory.Result.Select(
+                                x =>
+                                    new Game.Entities.Level
+                                    {
+                                        ActionType = x.Object.ActionType,
+                                        DateTime = DateTime.Parse(x.Object.TimeStamp),
+                                        Value = x.Object.Value
+                                    }).ToList();
+                    }
+                ),
+                Task.Factory.StartNew(
+                    () =>
+                    {
+                        var xpHistory = Client()
+                            .Child(_usersDocumentAlias)
+                            .Child(userRecord.UserName)
+                            .Child(_xpEventAlias)
+                            .OrderByKey()
+                            .OnceAsync<EventItem>();
 
-            userRecord.XpHistory = xpHistory.Select(x => new Game.Entities.Xp { ActionType = x.Object.ActionType, DateTime = DateTime.Parse(x.Object.TimeStamp), Value = x.Object.Value }).ToList();
+                        xpHistory.Wait();
+
+                        userRecord.XpHistory =
+                            xpHistory.Result.Select(
+                                x =>
+                                    new Game.Entities.Xp
+                                    {
+                                        ActionType = x.Object.ActionType,
+                                        DateTime = DateTime.Parse(x.Object.TimeStamp),
+                                        Value = x.Object.Value
+                                    }).ToList();
+                    }
+                )
+            };
+
+
+
+            Task.WaitAll(tasks.ToArray());
 
             return userRecord;
         }

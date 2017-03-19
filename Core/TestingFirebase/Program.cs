@@ -23,7 +23,7 @@ namespace TestingFirebase
             //EventItem eventItem = new EventItem(xp, integrationId, atst.Core.Game.Entities.ActionType.Add);
             //LevelItem levelItem = new LevelItem(level, atst.Core.Game.Entities.ActionType.Add);
 
-            //FirebaseHelper fbHelper = new FirebaseHelper();
+            FirebaseHelper fbHelper = new FirebaseHelper();
 
             //var xpTask = fbHelper.CreateXPRecordAsync(emailAddress.Replace(".", ","), eventItem);
             //var xpResult = xpTask.Result;
@@ -31,9 +31,9 @@ namespace TestingFirebase
             //var levelTask = fbHelper.CreateLevelRecordAsync(emailAddress.Replace(".", ","), levelItem);
             //var levelResult = levelTask.Result;
 
-            //var user = fbHelper.GetUser("prjseal@gmail,com");
-            //var userResult = user.Result;
-            //var item = user;
+            var user = fbHelper.GetUserAsync("prjseal@gmail,com");
+            var userResult = user.Result;
+            var item = user;
         }
     }
 }

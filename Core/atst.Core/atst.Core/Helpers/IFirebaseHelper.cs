@@ -8,6 +8,6 @@ namespace atst.Core.Helpers
     {
         Task<string> CreateXPRecordAsync(string userName, EventItem eventItem);
         Task<string> CreateLevelRecordAsync(string userName, LevelItem eventItem);
-        Task<User> GetUser(string userName);
+        Task<User> GetUserAsync(string userName);
     }
 }
