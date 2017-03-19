@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using atst.Core.Authentication.Entities;
 using Firebase.Database;
 
@@ -11,5 +12,6 @@ namespace atst.Core.Helpers
         Task<string> CreateGearRecordAsync(string userName, GeneralItem eventItem);
         Task<string> CreateHealthRecordAsync(string userName, GeneralItem eventItem);
         Task<User> GetUserAsync(string userName);
+        Task<List<string>> GetUserNamesAsync();
     }
 }

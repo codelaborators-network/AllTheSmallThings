@@ -83,13 +83,14 @@
     <Compile Include="Helpers\FirebaseHelper.cs" />
     <Compile Include="Integration\IIntegrationProviders.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Stats\Entities\ExtendedUser.cs" />
     <Compile Include="Tracking\IXpTracking.cs" />
     <Compile Include="Tracking\XpTracking.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Stats\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
