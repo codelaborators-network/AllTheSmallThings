@@ -10,6 +10,7 @@ namespace atst.Core.Integration
         SVN = 500,
         VSTS = 600,
         TFSOnsite = 700,
-        Trello = 800
+        Trello = 800,
+        Button = 900
     }
 }
