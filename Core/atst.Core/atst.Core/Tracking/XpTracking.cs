@@ -6,6 +6,7 @@ using System.Web.Compilation;
 using atst.Core.Authentication.Entities;
 using atst.Core.Game.Entities;
 using atst.Core.Game.Experience;
+using atst.Core.Game.Gear;
 using atst.Core.Game.Leveling;
 using atst.Core.Helpers;
 using atst.Core.Integration;
@@ -17,12 +18,14 @@ namespace atst.Core.Tracking
         private readonly IFirebaseHelper _firebaseHelper;
         private readonly ILevelEngine _levelEngine;
         private readonly IXpAggregator _xpAggregator;
+        private readonly IArmoury _armoury;
 
-        public XpTracking(IFirebaseHelper firebaseHelper, ILevelEngine levelEngine, IXpAggregator xpAggregator)
+        public XpTracking(IFirebaseHelper firebaseHelper, ILevelEngine levelEngine, IXpAggregator xpAggregator, IArmoury armoury)
         {
             _firebaseHelper = firebaseHelper;
             _levelEngine = levelEngine;
             _xpAggregator = xpAggregator;
+            _armoury = armoury;
         }
 
         public bool ApplyTracking(string xpModelUserName, int xpModelXp, IntegrationsProviderTypes integrationProvider, ActionType actionType)
@@ -30,6 +33,8 @@ namespace atst.Core.Tracking
             var success = true;
 
             var user = GetUser(xpModelUserName);
+
+            #region xp logic
             user.Xp += xpModelXp;
 
             try
@@ -41,6 +46,9 @@ namespace atst.Core.Tracking
             {
                 return false;
             }
+            #endregion xp logic
+
+            #region level logic
 
             var orginallevel = user.Level;
 
@@ -59,8 +67,31 @@ namespace atst.Core.Tracking
                     return false;
                 }
             }
+            #endregion level logic
 
-            return true;
+            #region Gear
+
+            var totalGearToAdd = xpModelXp / 50;
+
+            for (var i = 0; i < totalGearToAdd; i++)
+            {
+                try
+                {
+                    var gearItem = _armoury.CreateRandomWeapon();
+
+                    var eventItem = new GeneralItem(gearItem.Id, ActionType.Add);
+                    _firebaseHelper.CreateGearRecordAsync(xpModelUserName.Replace('.', ','), eventItem);
+                }
+                catch (Exception e)
+                {
+                    return false;
+                }
+            }
+
+
+            #endregion Gear
+
+            return success;
         }
 
         private User GetUser(string userName)

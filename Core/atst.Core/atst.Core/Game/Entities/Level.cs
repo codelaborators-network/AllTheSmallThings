@@ -3,7 +3,7 @@ using System;
 
 namespace atst.Core.Game.Entities
 {
-    public class Level
+    public class GeneralEvent
     {
         public int Value { get; set; }
         public ActionType ActionType { get; set; }

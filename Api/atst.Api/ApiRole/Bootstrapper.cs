@@ -1,5 +1,6 @@
 ﻿using atst.Core.Authentication;
 using atst.Core.Game.Experience;
+using atst.Core.Game.Gear;
 using atst.Core.Game.Leveling;
 using atst.Core.Helpers;
 using atst.Core.Integration;
@@ -19,6 +20,7 @@ namespace ApiRole
             container.Register<IFirebaseHelper, FirebaseHelper>();
             container.Register<IXpAggregator, XpAggregator>();
             container.Register<ILevelEngine, DefaultLevelEngine>();
+            container.Register<IArmoury, Armoury>();
         }
     }
 }
