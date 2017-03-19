@@ -9,6 +9,7 @@ class XpAggregator {
       console.log(ev);
       if (ev.ActionType === ADD_EVENT) total += parseInt(ev.Value);
       if (ev.ActionType === REMOVE_EVENT) total -= parseInt(ev.Value);
+      console.log(total);
     });
 
     return total;
