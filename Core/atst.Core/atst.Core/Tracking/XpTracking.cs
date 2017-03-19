@@ -68,7 +68,8 @@ namespace atst.Core.Tracking
 
             if (user == null)
             {
-                user = _firebaseHelper.GetUser(userName).Result ?? new User {UserName = userName};
+                var task = _firebaseHelper.GetUser(userName);
+                user = task.Result ?? new User {UserName = userName};
 
                 var level = user.LevelHistory.OrderByDescending(x => x.DateTime).FirstOrDefault();
 
