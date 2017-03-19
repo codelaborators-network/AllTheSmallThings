@@ -11,17 +11,17 @@ namespace atst.Core.Helpers
 {
     public class FirebaseHelper : IFirebaseHelper
     {
-        private string _appSecret { get; set; }
-        private string _databaseUrl { get; set; }
-        private string _usersDocumentAlias { get; set; }
+        private string _appSecret => "jyIAM1tnyy2k0y400mQgiNXKVG6jiO6lXqocQdqq";
+        private string _databaseUrl => "https://all-the-small-things-7b52b.firebaseio.com/";
+        private string _usersDocumentAlias => "users";
         private static string _xpEventAlias => "XPEvents";
         private static string _levelEventAlias => "Levels";
+        private static string _gearEventAlias => "Gear";
+        private static string _healthEventAlias => "Health";
 
         public FirebaseHelper()
         {
-            _appSecret = "jyIAM1tnyy2k0y400mQgiNXKVG6jiO6lXqocQdqq";
-            _databaseUrl = "https://all-the-small-things-7b52b.firebaseio.com/";
-            _usersDocumentAlias = "users";
+
         }
 
         private FirebaseClient Client()
@@ -44,13 +44,35 @@ namespace atst.Core.Helpers
             return record.Key;
         }
 
-        public async Task<string> CreateLevelRecordAsync(string userName, LevelItem levelItem)
+        public async Task<string> CreateLevelRecordAsync(string userName, GeneralItem generalItem)
         {
             var record = await Client()
               .Child(_usersDocumentAlias)
               .Child(userName)
               .Child(_levelEventAlias)
-              .PostAsync(levelItem);
+              .PostAsync(generalItem);
+
+            return record.Key;
+        }
+
+        public async Task<string> CreateGearRecordAsync(string userName, GeneralItem generalItem)
+        {
+            var record = await Client()
+              .Child(_usersDocumentAlias)
+              .Child(userName)
+              .Child(_gearEventAlias)
+              .PostAsync(generalItem);
+
+            return record.Key;
+        }
+
+        public async Task<string> CreateHealthRecordAsync(string userName, GeneralItem generalItem)
+        {
+            var record = await Client()
+              .Child(_usersDocumentAlias)
+              .Child(userName)
+              .Child(_healthEventAlias)
+              .PostAsync(generalItem);
 
             return record.Key;
         }
@@ -72,7 +94,7 @@ namespace atst.Core.Helpers
                             .Child(userRecord.UserName)
                             .Child(_levelEventAlias)
                             .OrderByKey()
-                            .OnceAsync<LevelItem>();
+                            .OnceAsync<GeneralItem>();
 
                         levelHistory.Wait();
 

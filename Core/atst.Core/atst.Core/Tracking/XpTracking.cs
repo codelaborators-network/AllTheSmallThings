@@ -51,7 +51,7 @@ namespace atst.Core.Tracking
             {
                 try
                 {
-                    var eventItem = new LevelItem(user.Level, ActionType.Add);
+                    var eventItem = new GeneralItem(user.Level, ActionType.Add);
                     _firebaseHelper.CreateLevelRecordAsync(xpModelUserName.Replace('.', ','), eventItem);
                 }
                 catch (Exception e)
