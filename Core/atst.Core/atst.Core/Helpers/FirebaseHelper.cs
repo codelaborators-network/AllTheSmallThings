@@ -57,10 +57,31 @@ namespace atst.Core.Helpers
 
         public async Task<User> GetUser(string userName)
         {
-            //FILL ME IN BIG BOY!!
+            User userRecord = new User();
+            userRecord.UserName = userName;
+
+            var levelHistory = await Client()
+              .Child(_usersDocumentAlias)
+              .Child(userName)
+              .Child(_levelEventAlias)
+              .OrderByKey()
+              .OnceAsync<LevelItem>();
+
+            userRecord.LevelHistory = levelHistory.Select(x=> new Game.Entities.Level { ActionType=x.Object.ActionType, DateTime = DateTime.Parse(x.Object.TimeStamp), Value = x.Object.Value  }).ToList();
+
+            var xpHistory = await Client()
+              .Child(_usersDocumentAlias)
+              .Child(userName)
+              .Child(_xpEventAlias)
+              .OrderByKey()
+              .OnceAsync<EventItem>();
+
+            userRecord.XpHistory = xpHistory.Select(x => new Game.Entities.Xp { ActionType = x.Object.ActionType, DateTime = DateTime.Parse(x.Object.TimeStamp), Value = x.Object.Value }).ToList();
+
+            List<User> userList = new List<User>();
 
 
-            return new User();
+            return userRecord;
         }
     }
 }
