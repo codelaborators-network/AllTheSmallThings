@@ -15,18 +15,18 @@ namespace TestingFirebase
         static void Main(string[] args)
         {
             //int integrationId = 100;
-            string emailAddress = "prjseal@gmail.com";
-            //int xp = 1;
+            //string emailAddress = "prjseal@gmail.com";
+            ////int xp = 1;
 
-            //int level = 1;
-            int gearValue = 1;
-            int healthValue = 1;
+            ////int level = 1;
+            //int gearValue = 1;
+            //int healthValue = 1;
 
-            //EventItem eventItem = new EventItem(xp, integrationId, atst.Core.Game.Entities.ActionType.Add);
-            //LevelItem levelItem = new LevelItem(level, atst.Core.Game.Entities.ActionType.Add);
-            GeneralItem gearItem = new GeneralItem(gearValue, atst.Core.Game.Entities.ActionType.Add);
+            ////EventItem eventItem = new EventItem(xp, integrationId, atst.Core.Game.Entities.ActionType.Add);
+            ////LevelItem levelItem = new LevelItem(level, atst.Core.Game.Entities.ActionType.Add);
+            //GeneralItem gearItem = new GeneralItem(gearValue, atst.Core.Game.Entities.ActionType.Add);
 
-            GeneralItem healthItem = new GeneralItem(healthValue, atst.Core.Game.Entities.ActionType.Add);
+            //GeneralItem healthItem = new GeneralItem(healthValue, atst.Core.Game.Entities.ActionType.Add);
 
             FirebaseHelper fbHelper = new FirebaseHelper();
 
@@ -46,11 +46,20 @@ namespace TestingFirebase
             //userTask.Wait();
 
 
-            var userNamesTask = fbHelper.GetUserNamesAsync();
-            userNamesTask.Wait();
+            //var userNamesTask = fbHelper.GetUserNamesAsync();
+            //userNamesTask.Wait();
 
-            var userResult = userNamesTask.Result;
+            //var userResult = userNamesTask.Result;
             //var item = user;
+
+            string emailAddress = "seppydude@hotmail.com";
+            string name = "Jamie Taylor";
+            string imageName = "jamie.jpg";
+
+            ProfileItem profile = new ProfileItem(name, imageName.Replace(".", ","));
+
+            var imageTask = fbHelper.CreateProfileRecordAsync(emailAddress.Replace(".", ","), profile);
+            var imageResult = imageTask.Result;
         }
     }
 }
