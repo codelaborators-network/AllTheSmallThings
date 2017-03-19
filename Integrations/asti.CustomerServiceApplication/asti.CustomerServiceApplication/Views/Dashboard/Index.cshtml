@@ -1,0 +1,90 @@
+﻿@using System.Collections.Generic;
+
+@model List<asti.CustomerServiceApplication.Models.UserClass>
+
+@{
+    ViewBag.Title = "All The Small Things - Dashboard";
+    var panelEntries = new string[] { "panel-primary", "panel-green", "panel-yellow", "panel-red" };
+}
+
+<div class="row">
+    <div class="col-xs-12">
+        <h2 class="user-header">All The Small Things</h2>
+    </div>
+</div>
+
+<div class="row">
+    @foreach (var user in Model)
+    {
+    <div class="col-lg-3 col-md-6">
+        <div class="panel @(panelEntries[Model.IndexOf(user) %4])">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <img class="profile" src="~/Content/img/@(user.Username.Replace("@", string.Empty).Replace(",", string.Empty)).jpg")" />
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge">EP: @user.CurrentXp</div>
+                        <div>Level: @user.Level</div>
+                    </div>
+                </div>
+            </div>
+            <a href="@Url.Action("IndividualUser", "Dashboard", new { userEmailAddress = user.Username})">
+                <div class="panel-footer">
+                    <span class="pull-left">@user.Username.Replace(",",".")</span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+    }
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-bar-chart-o fa-fw"></i> Team
+            </div>
+            <div class="panel-body">
+                <div id="morris-area-chart"></div>
+            </div>
+        </div>
+    </div>
+</div>
+@{ 
+   var data = Model.SelectMany(x => x.XpHistory.Select(c => new { c.DateTime, c.Value })).OrderBy(x=>x.DateTime).ToList();
+   
+}
+
+
+@section scripts {
+<script>
+		$(function() {
+			Morris.Area({
+				element: 'morris-area-chart',
+                data: [
+
+                @for (int i = 0; i < data.Count; i++)
+                {
+
+                        <text>
+                        {period:' @i',XP:@data[i].Value},
+</text>
+                }
+
+                ],
+				xkey: 'period',
+				ykeys: ['XP'],
+				//labels: ['XP'],
+				pointSize: 1,
+				hideHover: 'auto',
+				resize: true
+
+            });
+
+
+		});
+</script>
+    }

@@ -23,9 +23,14 @@ namespace asti.CustomerServiceApplication
                    "~/Scripts/bootstrap.js",
                    "~/Scripts/respond.js"));
 
+         bundles.Add(new ScriptBundle("~/bundles/morris-and-raphael").Include(
+                  "~/Scripts/morris.js",
+                  "~/Scripts/raphael.js"));
+
          bundles.Add(new StyleBundle("~/Content/css").Include(
                    "~/Content/bootstrap.css",
-                   "~/Content/site.css"));
+                   "~/Content/site.css,",
+                   "~/Content/sb-admin-2.css"));
       }
    }
 }
