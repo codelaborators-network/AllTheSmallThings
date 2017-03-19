@@ -10,6 +10,8 @@ namespace atst.Core.Authentication.Entities
         public int Xp { get; set; }
         public IList<Xp> XpHistory { get; set; }
         public int Level { get; set; }
-        public IList<Level> LevelHistory {get;set;}
+        public IList<GeneralEvent> LevelHistory {get;set;}
+        public IList<GeneralEvent> GearHistory { get; set; }
+        public IList<GeneralEvent> HealthHistory { get; set; }
     }
 }

@@ -36,15 +36,20 @@ namespace TestingFirebase
             //var levelTask = fbHelper.CreateLevelRecordAsync(emailAddress.Replace(".", ","), levelItem);
             //var levelResult = levelTask.Result;
 
-            var gearTask = fbHelper.CreateGearRecordAsync(emailAddress.Replace(".", ","), gearItem);
-            var gearResult = gearTask.Result;
+            //var gearTask = fbHelper.CreateGearRecordAsync(emailAddress.Replace(".", ","), gearItem);
+            //var gearResult = gearTask.Result;
 
-            var healthTask = fbHelper.CreateHealthRecordAsync(emailAddress.Replace(".", ","), healthItem);
-            var healthResult = healthTask.Result;
+            //var healthTask = fbHelper.CreateHealthRecordAsync(emailAddress.Replace(".", ","), healthItem);
+            //var healthResult = healthTask.Result;
 
-            var userTask = fbHelper.GetUserAsync("prjseal@gmail,com");
-            userTask.Wait();
-            var userResult = userTask.Result;
+            //var userTask = fbHelper.GetUserAsync("prjseal@gmail,com");
+            //userTask.Wait();
+
+
+            var userNamesTask = fbHelper.GetUserNamesAsync();
+            userNamesTask.Wait();
+
+            var userResult = userNamesTask.Result;
             //var item = user;
         }
     }
