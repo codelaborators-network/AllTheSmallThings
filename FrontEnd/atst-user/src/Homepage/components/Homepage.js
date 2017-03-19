@@ -4,15 +4,13 @@ import HomepageHeader from '../../HomepageHeader/components/HomepageHeader';
 import HomepageContent from '../../HomepageContent/components/HomepageContent';
 
 class Homepage extends Component {
-
-
   render() {
     return (
       <UidProvider>
         {(email) => (
           <div>
             <HomepageHeader />
-            <HomepageContent />
+            <HomepageContent email={email} />
           </div>
         )}
       </UidProvider>
