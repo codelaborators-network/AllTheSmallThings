@@ -96,3 +96,8 @@ dd {
 h3.name {
     color:#eb3b60;
 }
+
+.gear-row {
+    height: 400px;
+    overflow-y: scroll;
+}

@@ -64,6 +64,7 @@
   <ItemGroup>
     <Compile Include="Authentication\Entities\LevelItem.cs" />
     <Compile Include="Authentication\Entities\EventItem.cs" />
+    <Compile Include="Authentication\Entities\ProfileItem.cs" />
     <Compile Include="Authentication\Entities\User.cs" />
     <Compile Include="Game\Entities\enums.cs" />
     <Compile Include="Game\Entities\Level.cs" />
